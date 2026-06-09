@@ -1,0 +1,380 @@
+require('dotenv').config();
+const path = require('path');
+const fs = require('fs');
+const express = require('express');
+const cors = require('cors');
+const multer = require('multer');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Database = require('better-sqlite3');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_change_me';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'excel2026';
+
+const ROOT = __dirname;
+const PUBLIC_DIR = path.join(ROOT, 'public');
+const UPLOAD_DIR = path.join(PUBLIC_DIR, 'uploads');
+const DATA_DIR = path.join(ROOT, 'data');
+const DB_PATH = path.join(DATA_DIR, 'excel_crop_care.sqlite');
+fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+fs.mkdirSync(DATA_DIR, { recursive: true });
+
+app.use(cors());
+app.use(express.json({ limit: '15mb' }));
+app.use(express.urlencoded({ extended: true, limit: '15mb' }));
+app.use(express.static(PUBLIC_DIR));
+
+const db = new Database(DB_PATH);
+db.pragma('journal_mode = WAL');
+
+function initDb(){
+  db.exec(`
+  CREATE TABLE IF NOT EXISTS admins (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+  CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY,
+    cat TEXT NOT NULL,
+    name TEXT NOT NULL,
+    urdu TEXT,
+    wt TEXT,
+    price REAL NOT NULL DEFAULT 0,
+    comp TEXT,
+    shape TEXT,
+    hot INTEGER DEFAULT 0,
+    disc REAL DEFAULT 0,
+    img TEXT,
+    realProductPhoto INTEGER DEFAULT 0,
+    realPhotoSource TEXT,
+    stock INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+  CREATE TABLE IF NOT EXISTS orders (
+    id TEXT PRIMARY KEY,
+    date TEXT,
+    customer_name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    city TEXT NOT NULL,
+    address TEXT NOT NULL,
+    subtotal REAL DEFAULT 0,
+    delivery REAL DEFAULT 0,
+    total REAL DEFAULT 0,
+    payment_method TEXT DEFAULT 'COD',
+    status TEXT DEFAULT 'New',
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+  CREATE TABLE IF NOT EXISTS order_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id TEXT NOT NULL,
+    product_id INTEGER,
+    name TEXT NOT NULL,
+    category TEXT,
+    price REAL DEFAULT 0,
+    qty INTEGER DEFAULT 1,
+    img TEXT,
+    FOREIGN KEY(order_id) REFERENCES orders(id) ON DELETE CASCADE
+  );
+  CREATE TABLE IF NOT EXISTS site_settings (
+    key TEXT PRIMARY KEY,
+    value TEXT DEFAULT ''
+  );
+  CREATE TABLE IF NOT EXISTS media_library (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    label TEXT,
+    url TEXT NOT NULL,
+    type TEXT DEFAULT 'image',
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+  CREATE TABLE IF NOT EXISTS deals (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT DEFAULT '',
+    style TEXT DEFAULT 'dark',
+    bg_img TEXT DEFAULT '',
+    active INTEGER DEFAULT 1,
+    end_date TEXT DEFAULT '',
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+  CREATE TABLE IF NOT EXISTS deal_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    deal_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    deal_price REAL NOT NULL DEFAULT 0,
+    FOREIGN KEY(deal_id) REFERENCES deals(id) ON DELETE CASCADE
+  );
+  `);
+
+  const defaultSettings = {
+    company_name:'Excel Crop Care',
+    company_urdu:'ایکسَل کراپ کیئر',
+    slogan_urdu:'ایکسَل اور کسان، خوشحال پاکستان',
+    phone:'061-6537203',
+    whatsapp:'923000000000',
+    address:'Plot 228-229, Phase-II, Industrial Estate, Multan',
+    announcement:'🚚 پاکستان بھر میں ترسیل | Free Delivery Rs.2000+',
+    logo_url:'',
+    hero_background_url:'',
+    expert_image_url:'',
+    footer_about:'Excel Crop Care provides genuine agricultural products and farmer support.',
+    return_policy:'7-day return window for wrong or damaged product with invoice and photo proof.',
+    terms_conditions:'Use products according to label directions. Prices and availability may change before order confirmation.',
+    faq_text:'FAQ: Delivery, returns, payment methods and product guidance are available through customer support.',
+    free_delivery_formula:'Free delivery on orders Rs.2000+',
+    customer_support_text:'WhatsApp support available Mon-Sat for orders, crop photos and policy questions.'
+  };
+  const insertSetting = db.prepare('INSERT OR IGNORE INTO site_settings(key,value) VALUES(?,?)');
+  Object.entries(defaultSettings).forEach(([k,v])=>insertSetting.run(k,v));
+
+  const admin = db.prepare('SELECT id FROM admins WHERE username=?').get(ADMIN_USERNAME);
+  if(!admin){
+    const hash = bcrypt.hashSync(ADMIN_PASSWORD, 12);
+    db.prepare('INSERT INTO admins(username,password_hash) VALUES(?,?)').run(ADMIN_USERNAME, hash);
+    console.log(`Seeded admin: ${ADMIN_USERNAME} / ${ADMIN_PASSWORD}`);
+  }
+
+  const count = db.prepare('SELECT COUNT(*) AS c FROM products').get().c;
+  if(count === 0){
+    const seedPath = path.join(DATA_DIR, 'products.seed.json');
+    if(fs.existsSync(seedPath)){
+      const seed = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
+      const insert = db.prepare(`INSERT INTO products(id,cat,name,urdu,wt,price,comp,shape,hot,disc,img,realProductPhoto,realPhotoSource,stock)
+        VALUES(@id,@cat,@name,@urdu,@wt,@price,@comp,@shape,@hot,@disc,@img,@realProductPhoto,@realPhotoSource,@stock)`);
+      const tx = db.transaction((rows)=>{
+        rows.forEach(p=>insert.run({
+          id:p.id, cat:p.cat||'', name:p.name||'', urdu:p.urdu||'', wt:p.wt||'', price:Number(p.price)||0,
+          comp:p.comp||'', shape:p.shape||'', hot:p.hot?1:0, disc:Number(p.disc)||0, img:p.img||'',
+          realProductPhoto:p.realProductPhoto?1:0, realPhotoSource:p.realPhotoSource||'', stock:p.stock||0
+        }));
+      });
+      tx(seed);
+      console.log(`Seeded ${seed.length} products into database.`);
+    }
+  }
+}
+initDb();
+
+function productRowToClient(p){
+  return {
+    id:p.id, cat:p.cat, name:p.name, urdu:p.urdu, wt:p.wt, price:p.price, comp:p.comp,
+    shape:p.shape, hot:!!p.hot, disc:p.disc, img:p.img, realProductPhoto:!!p.realProductPhoto,
+    realPhotoSource:p.realPhotoSource, stock:p.stock
+  };
+}
+
+function auth(req,res,next){
+  const header = req.headers.authorization || '';
+  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
+  if(!token) return res.status(401).json({error:'Missing admin token'});
+  try{ req.admin = jwt.verify(token, JWT_SECRET); next(); }
+  catch(e){ return res.status(401).json({error:'Invalid or expired token'}); }
+}
+
+const storage = multer.diskStorage({
+  destination: (req,file,cb)=>cb(null, UPLOAD_DIR),
+  filename: (req,file,cb)=>{
+    const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
+    const safe = file.originalname.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').slice(0,60);
+    cb(null, `${Date.now()}-${safe}${ext}`);
+  }
+});
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req,file,cb)=>{
+    if(!/^image\/(png|jpe?g|webp|gif)$/i.test(file.mimetype)) return cb(new Error('Only image files are allowed'));
+    cb(null, true);
+  }
+});
+
+
+function getSettings(){
+  const rows = db.prepare('SELECT key,value FROM site_settings').all();
+  return Object.fromEntries(rows.map(r=>[r.key,r.value]));
+}
+function setSetting(key,value){
+  db.prepare('INSERT INTO site_settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').run(String(key), String(value ?? ''));
+}
+function dealRowToClient(d){
+  const items = db.prepare(`SELECT di.product_id, di.deal_price, p.name, p.cat, p.wt, p.price, p.comp, p.img
+    FROM deal_items di LEFT JOIN products p ON p.id=di.product_id WHERE di.deal_id=? ORDER BY di.id ASC`).all(d.id);
+  return {id:d.id,title:d.title,description:d.description,style:d.style,bg_img:d.bg_img,active:!!d.active,end_date:d.end_date,items};
+}
+
+// Public API
+app.get('/api/health', (req,res)=>res.json({ok:true, app:'Excel Crop Care Backend v12'}));
+app.get('/api/products', (req,res)=>{
+  const rows = db.prepare('SELECT * FROM products ORDER BY id ASC').all();
+  res.json(rows.map(productRowToClient));
+});
+app.get('/api/products/:id', (req,res)=>{
+  const row = db.prepare('SELECT * FROM products WHERE id=?').get(req.params.id);
+  if(!row) return res.status(404).json({error:'Product not found'});
+  res.json(productRowToClient(row));
+});
+app.post('/api/orders', (req,res)=>{
+  const {customer={}, items=[], subtotal=0, delivery=0, total=0, payment_method='COD'} = req.body || {};
+  if(!customer.name || !customer.phone || !customer.city || !customer.address) return res.status(400).json({error:'Customer name, phone, city and address are required'});
+  if(!Array.isArray(items) || items.length === 0) return res.status(400).json({error:'Order items are required'});
+  const id = 'ECC-' + Date.now();
+  const date = new Date().toLocaleDateString('en-PK');
+  const tx = db.transaction(()=>{
+    db.prepare(`INSERT INTO orders(id,date,customer_name,phone,city,address,subtotal,delivery,total,payment_method,status)
+      VALUES(?,?,?,?,?,?,?,?,?,?,?)`).run(id,date,customer.name,customer.phone,customer.city,customer.address,subtotal,delivery,total,payment_method,'New');
+    const itemStmt = db.prepare(`INSERT INTO order_items(order_id,product_id,name,category,price,qty,img) VALUES(?,?,?,?,?,?,?)`);
+    items.forEach(it=>itemStmt.run(id,it.product_id||it.id||null,it.name||'Product',it.category||it.cat||'',Number(it.price)||0,Number(it.qty)||1,it.img||''));
+  });
+  tx();
+  const order = buildOrder(id);
+  res.status(201).json({ok:true, order});
+});
+
+
+app.get('/api/site/settings', (req,res)=>res.json(getSettings()));
+app.get('/api/deals', (req,res)=>{
+  const where = req.query.all === '1' ? '' : 'WHERE active=1';
+  const rows = db.prepare(`SELECT * FROM deals ${where} ORDER BY id DESC`).all();
+  res.json(rows.map(dealRowToClient));
+});
+
+// Admin API
+app.post('/api/admin/login', (req,res)=>{
+  const {username,password} = req.body || {};
+  const admin = db.prepare('SELECT * FROM admins WHERE username=?').get(username || '');
+  if(!admin || !bcrypt.compareSync(password || '', admin.password_hash)) return res.status(401).json({error:'Invalid username or password'});
+  const token = jwt.sign({id:admin.id, username:admin.username}, JWT_SECRET, {expiresIn:'8h'});
+  res.json({ok:true, token, admin:{id:admin.id, username:admin.username}});
+});
+app.get('/api/admin/me', auth, (req,res)=>res.json({ok:true, admin:req.admin}));
+
+app.get('/api/admin/products', auth, (req,res)=>{
+  res.json(db.prepare('SELECT * FROM products ORDER BY id ASC').all().map(productRowToClient));
+});
+app.post('/api/admin/products', auth, upload.single('image'), (req,res)=>{
+  const body = req.body || {};
+  const nextId = (db.prepare('SELECT MAX(id) AS m FROM products').get().m || 0) + 1;
+  const img = req.file ? `/uploads/${req.file.filename}` : (body.img || '');
+  db.prepare(`INSERT INTO products(id,cat,name,urdu,wt,price,comp,shape,hot,disc,img,realProductPhoto,realPhotoSource,stock)
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(nextId,body.cat||'Insecticides',body.name||'New Product',body.urdu||'',body.wt||'',Number(body.price)||0,body.comp||'',body.shape||'bottle',body.hot==='true'||body.hot==='1'?1:0,Number(body.disc)||0,img,req.file?1:0,req.file?'admin uploaded product photo':body.realPhotoSource||'',Number(body.stock)||0);
+  res.status(201).json({ok:true, product:productRowToClient(db.prepare('SELECT * FROM products WHERE id=?').get(nextId))});
+});
+app.put('/api/admin/products/:id', auth, upload.single('image'), (req,res)=>{
+  const existing = db.prepare('SELECT * FROM products WHERE id=?').get(req.params.id);
+  if(!existing) return res.status(404).json({error:'Product not found'});
+  const b = req.body || {};
+  const img = req.file ? `/uploads/${req.file.filename}` : (b.img !== undefined ? b.img : existing.img);
+  db.prepare(`UPDATE products SET cat=?,name=?,urdu=?,wt=?,price=?,comp=?,shape=?,hot=?,disc=?,img=?,realProductPhoto=?,realPhotoSource=?,stock=?,updated_at=CURRENT_TIMESTAMP WHERE id=?`)
+    .run(b.cat||existing.cat,b.name||existing.name,b.urdu??existing.urdu,b.wt??existing.wt,Number(b.price??existing.price),b.comp??existing.comp,b.shape??existing.shape,(b.hot==='true'||b.hot==='1'||b.hot===true)?1:0,Number(b.disc??existing.disc),img,req.file?1:(b.realProductPhoto==='true'||b.realProductPhoto==='1'||existing.realProductPhoto?1:0),req.file?'admin uploaded product photo':(b.realPhotoSource??existing.realPhotoSource),Number(b.stock??existing.stock),req.params.id);
+  res.json({ok:true, product:productRowToClient(db.prepare('SELECT * FROM products WHERE id=?').get(req.params.id))});
+});
+app.post('/api/admin/products/:id/image', auth, upload.single('image'), (req,res)=>{
+  if(!req.file) return res.status(400).json({error:'Image file is required'});
+  const img = `/uploads/${req.file.filename}`;
+  db.prepare('UPDATE products SET img=?, realProductPhoto=1, realPhotoSource=?, updated_at=CURRENT_TIMESTAMP WHERE id=?').run(img,'admin uploaded product photo',req.params.id);
+  res.json({ok:true, img, product:productRowToClient(db.prepare('SELECT * FROM products WHERE id=?').get(req.params.id))});
+});
+app.delete('/api/admin/products/:id', auth, (req,res)=>{
+  const result = db.prepare('DELETE FROM products WHERE id=?').run(req.params.id);
+  res.json({ok:true, deleted:result.changes});
+});
+
+function buildOrder(id){
+  const o = db.prepare('SELECT * FROM orders WHERE id=?').get(id);
+  if(!o) return null;
+  const items = db.prepare('SELECT product_id AS id, name, category AS cat, price, qty, img FROM order_items WHERE order_id=?').all(id);
+  return {id:o.id,date:o.date,name:o.customer_name,phone:o.phone,city:o.city,address:o.address,items,subtotal:o.subtotal,delivery:o.delivery,total:o.total,status:o.status,payment_method:o.payment_method,created_at:o.created_at};
+}
+
+app.get('/api/admin/settings', auth, (req,res)=>res.json(getSettings()));
+app.put('/api/admin/settings', auth, (req,res)=>{
+  const body = req.body || {};
+  Object.entries(body).forEach(([k,v])=>setSetting(k,v));
+  res.json({ok:true, settings:getSettings()});
+});
+app.post('/api/admin/settings/upload/:key', auth, upload.single('image'), (req,res)=>{
+  if(!req.file) return res.status(400).json({error:'Image file is required'});
+  const key = req.params.key;
+  const allowed = new Set(['logo_url','hero_background_url','expert_image_url']);
+  if(!allowed.has(key)) return res.status(400).json({error:'Invalid setting image key'});
+  const url = `/uploads/${req.file.filename}`;
+  setSetting(key,url);
+  db.prepare('INSERT INTO media_library(label,url,type) VALUES(?,?,?)').run(key,url,'image');
+  res.json({ok:true, key, url, settings:getSettings()});
+});
+app.get('/api/admin/media', auth, (req,res)=>{
+  res.json(db.prepare('SELECT * FROM media_library ORDER BY id DESC').all());
+});
+app.post('/api/admin/media', auth, upload.single('image'), (req,res)=>{
+  if(!req.file) return res.status(400).json({error:'Image file is required'});
+  const url = `/uploads/${req.file.filename}`;
+  const label = req.body.label || req.file.originalname || 'Uploaded image';
+  const info = db.prepare('INSERT INTO media_library(label,url,type) VALUES(?,?,?)').run(label,url,'image');
+  res.status(201).json({ok:true, media:{id:info.lastInsertRowid,label,url,type:'image'}});
+});
+
+app.get('/api/admin/deals', auth, (req,res)=>{
+  const rows = db.prepare('SELECT * FROM deals ORDER BY id DESC').all();
+  res.json(rows.map(dealRowToClient));
+});
+app.post('/api/admin/deals', auth, (req,res)=>{
+  const b = req.body || {};
+  const info = db.prepare('INSERT INTO deals(title,description,style,bg_img,active,end_date) VALUES(?,?,?,?,?,?)')
+    .run(b.title || 'Special Deal', b.description || '', b.style || 'dark', b.bg_img || '', b.active === false || b.active === 0 ? 0 : 1, b.end_date || '');
+  const dealId = info.lastInsertRowid;
+  const itemStmt = db.prepare('INSERT INTO deal_items(deal_id,product_id,deal_price) VALUES(?,?,?)');
+  const items = Array.isArray(b.items) ? b.items : [];
+  const tx = db.transaction(()=>{ items.forEach(it=>{ if(it.product_id) itemStmt.run(dealId, Number(it.product_id), Number(it.deal_price)||0); }); });
+  tx();
+  res.status(201).json({ok:true, deal:dealRowToClient(db.prepare('SELECT * FROM deals WHERE id=?').get(dealId))});
+});
+app.put('/api/admin/deals/:id', auth, (req,res)=>{
+  const existing = db.prepare('SELECT * FROM deals WHERE id=?').get(req.params.id);
+  if(!existing) return res.status(404).json({error:'Deal not found'});
+  const b = req.body || {};
+  db.prepare('UPDATE deals SET title=?,description=?,style=?,bg_img=?,active=?,end_date=?,updated_at=CURRENT_TIMESTAMP WHERE id=?')
+    .run(b.title || existing.title, b.description ?? existing.description, b.style || existing.style, b.bg_img ?? existing.bg_img, b.active === false || b.active === 0 ? 0 : 1, b.end_date ?? existing.end_date, req.params.id);
+  db.prepare('DELETE FROM deal_items WHERE deal_id=?').run(req.params.id);
+  const itemStmt = db.prepare('INSERT INTO deal_items(deal_id,product_id,deal_price) VALUES(?,?,?)');
+  const items = Array.isArray(b.items) ? b.items : [];
+  const tx = db.transaction(()=>{ items.forEach(it=>{ if(it.product_id) itemStmt.run(req.params.id, Number(it.product_id), Number(it.deal_price)||0); }); });
+  tx();
+  res.json({ok:true, deal:dealRowToClient(db.prepare('SELECT * FROM deals WHERE id=?').get(req.params.id))});
+});
+app.delete('/api/admin/deals/:id', auth, (req,res)=>{
+  db.prepare('DELETE FROM deals WHERE id=?').run(req.params.id);
+  res.json({ok:true});
+});
+
+app.get('/api/admin/orders', auth, (req,res)=>{
+  const rows = db.prepare('SELECT id FROM orders ORDER BY created_at DESC').all();
+  res.json(rows.map(r=>buildOrder(r.id)));
+});
+app.put('/api/admin/orders/:id/status', auth, (req,res)=>{
+  const allowed = new Set(['New','Pending','Completed','Cancelled']);
+  const status = allowed.has(req.body.status) ? req.body.status : 'New';
+  db.prepare('UPDATE orders SET status=? WHERE id=?').run(status, req.params.id);
+  res.json({ok:true, order:buildOrder(req.params.id)});
+});
+app.get('/api/admin/accounts/summary', auth, (req,res)=>{
+  const orders = db.prepare('SELECT * FROM orders').all();
+  const items = db.prepare('SELECT oi.*, o.status FROM order_items oi JOIN orders o ON o.id=oi.order_id').all();
+  const net = orders.filter(o=>o.status!=='Cancelled').reduce((s,o)=>s+Number(o.total||0),0);
+  const completed = orders.filter(o=>o.status==='Completed').reduce((s,o)=>s+Number(o.total||0),0);
+  const pending = orders.filter(o=>o.status==='New'||o.status==='Pending').reduce((s,o)=>s+Number(o.total||0),0);
+  const cancelled = orders.filter(o=>o.status==='Cancelled').reduce((s,o)=>s+Number(o.total||0),0);
+  const units = items.filter(i=>i.status!=='Cancelled').reduce((s,i)=>s+Number(i.qty||0),0);
+  const byProduct = {};
+  items.filter(i=>i.status!=='Cancelled').forEach(i=>{ const k=i.name; if(!byProduct[k]) byProduct[k]={name:k,qty:0,revenue:0}; byProduct[k].qty+=Number(i.qty||0); byProduct[k].revenue+=Number(i.price||0)*Number(i.qty||1); });
+  res.json({orders:orders.length,net,completed,pending,cancelled,units,byProduct:Object.values(byProduct).sort((a,b)=>b.revenue-a.revenue)});
+});
+
+app.get('/admin', (req,res)=>res.sendFile(path.join(PUBLIC_DIR, 'admin.html')));
+app.use((err,req,res,next)=>res.status(400).json({error:err.message || 'Request failed'}));
+app.listen(PORT, ()=>console.log(`Excel Crop Care backend running at http://localhost:${PORT}`));
