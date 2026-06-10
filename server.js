@@ -30,6 +30,14 @@ app.use(express.static(PUBLIC_DIR));
 const db = new Database(DB_PATH);
 db.pragma('journal_mode = WAL');
 
+function ensureColumn(table, column, definition){
+  const cols = db.prepare(`PRAGMA table_info(${table})`).all().map(c=>c.name);
+  if(!cols.includes(column)){
+    db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+  }
+}
+
+
 function initDb(){
   db.exec(`
   CREATE TABLE IF NOT EXISTS admins (
@@ -112,6 +120,13 @@ function initDb(){
   );
   `);
 
+  ensureColumn('products','stock_status',"TEXT DEFAULT 'in'");
+  ensureColumn('products','out_of_stock',"INTEGER DEFAULT 0");
+  ensureColumn('orders','payment_status',"TEXT DEFAULT 'Pending'");
+  ensureColumn('orders','transaction_id',"TEXT DEFAULT ''");
+  ensureColumn('orders','payment_note',"TEXT DEFAULT ''");
+  ensureColumn('orders','payment_proof_url',"TEXT DEFAULT ''");
+
   const defaultSettings = {
     company_name:'Excel Crop Care',
     company_urdu:'ایکسَل کراپ کیئر',
@@ -128,7 +143,13 @@ function initDb(){
     terms_conditions:'Use products according to label directions. Prices and availability may change before order confirmation.',
     faq_text:'FAQ: Delivery, returns, payment methods and product guidance are available through customer support.',
     free_delivery_formula:'Free delivery on orders Rs.2000+',
-    customer_support_text:'WhatsApp support available Mon-Sat for orders, crop photos and policy questions.'
+    customer_support_text:'WhatsApp support available Mon-Sat for orders, crop photos and policy questions.',
+    bank_name:'Bank Transfer',
+    account_title:'Excel Crop Care',
+    account_number:'',
+    iban:'',
+    branch_city:'Multan',
+    bank_note:'Upload payment screenshot after bank transfer. Admin will verify and mark payment as paid.'
   };
   const insertSetting = db.prepare('INSERT OR IGNORE INTO site_settings(key,value) VALUES(?,?)');
   Object.entries(defaultSettings).forEach(([k,v])=>insertSetting.run(k,v));
@@ -165,7 +186,7 @@ function productRowToClient(p){
   return {
     id:p.id, cat:p.cat, name:p.name, urdu:p.urdu, wt:p.wt, price:p.price, comp:p.comp,
     shape:p.shape, hot:!!p.hot, disc:p.disc, img:p.img, realProductPhoto:!!p.realProductPhoto,
-    realPhotoSource:p.realPhotoSource, stock:p.stock
+    realPhotoSource:p.realPhotoSource, stock:p.stock, stock_status:p.stock_status||'in', stockStatus:p.stock_status||'in', outOfStock:!!(p.out_of_stock)
   };
 }
 
@@ -208,6 +229,23 @@ function dealRowToClient(d){
   return {id:d.id,title:d.title,description:d.description,style:d.style,bg_img:d.bg_img,active:!!d.active,end_date:d.end_date,items};
 }
 
+
+function savePaymentProofFromBody(body){
+  const proof = body.paymentProof || body.payment_proof || body.proof || {};
+  const data = typeof proof === 'string' ? proof : (proof.data || '');
+  if(!data || !String(data).startsWith('data:image/')) return '';
+  const match = String(data).match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+  if(!match) return '';
+  const mime = match[1].toLowerCase();
+  const ext = mime.includes('png') ? '.png' : mime.includes('webp') ? '.webp' : mime.includes('gif') ? '.gif' : '.jpg';
+  const filename = `payment-proof-${Date.now()}-${Math.random().toString(16).slice(2)}${ext}`;
+  fs.writeFileSync(path.join(UPLOAD_DIR, filename), Buffer.from(match[2], 'base64'));
+  return `/uploads/${filename}`;
+}
+function boolFromBody(v){
+  return v === true || v === 'true' || v === '1' || v === 1 || String(v).toLowerCase()==='out';
+}
+
 // Public API
 app.get('/api/health', (req,res)=>res.json({ok:true, app:'Excel Crop Care Backend v12'}));
 app.get('/api/products', (req,res)=>{
@@ -219,21 +257,54 @@ app.get('/api/products/:id', (req,res)=>{
   if(!row) return res.status(404).json({error:'Product not found'});
   res.json(productRowToClient(row));
 });
-app.post('/api/orders', (req,res)=>{
-  const {customer={}, items=[], subtotal=0, delivery=0, total=0, payment_method='COD'} = req.body || {};
-  if(!customer.name || !customer.phone || !customer.city || !customer.address) return res.status(400).json({error:'Customer name, phone, city and address are required'});
-  if(!Array.isArray(items) || items.length === 0) return res.status(400).json({error:'Order items are required'});
-  const id = 'ECC-' + Date.now();
-  const date = new Date().toLocaleDateString('en-PK');
+app.post('/api/orders', upload.single('payment_proof'), (req,res)=>{
+  const body = req.body || {};
+  const customer = body.customer || {};
+  const flatCustomer = {
+    name: body.name || body.customer_name || customer.name || '',
+    phone: body.phone || customer.phone || '',
+    city: body.city || customer.city || '',
+    address: body.address || customer.address || ''
+  };
+
+  let items = body.items || [];
+  if(typeof items === 'string'){
+    try{ items = JSON.parse(items); }catch(e){ items = []; }
+  }
+
+  const subtotal = Number(body.subtotal || 0);
+  const delivery = Number(body.delivery || 0);
+  const total = Number(body.total || subtotal + delivery || 0);
+  const payment_method = body.payment_method || body.paymentMethod || 'Bank Transfer';
+  const payment_status = body.payment_status || body.paymentStatus || 'Pending';
+  const transaction_id = body.transaction_id || body.transactionId || '';
+  const payment_note = body.payment_note || body.paymentNote || '';
+
+  if(!flatCustomer.name || !flatCustomer.phone || !flatCustomer.city || !flatCustomer.address){
+    return res.status(400).json({error:'Customer name, phone, city and address are required'});
+  }
+  if(!Array.isArray(items) || items.length === 0){
+    return res.status(400).json({error:'Order items are required'});
+  }
+
+  let proofUrl = '';
+  if(req.file) proofUrl = `/uploads/${req.file.filename}`;
+  else proofUrl = savePaymentProofFromBody(body);
+
+  const id = body.id || ('ECC-' + Date.now());
+  const date = body.date || new Date().toLocaleDateString('en-PK');
+
   const tx = db.transaction(()=>{
-    db.prepare(`INSERT INTO orders(id,date,customer_name,phone,city,address,subtotal,delivery,total,payment_method,status)
-      VALUES(?,?,?,?,?,?,?,?,?,?,?)`).run(id,date,customer.name,customer.phone,customer.city,customer.address,subtotal,delivery,total,payment_method,'New');
+    db.prepare(`INSERT OR REPLACE INTO orders(id,date,customer_name,phone,city,address,subtotal,delivery,total,payment_method,status,payment_status,transaction_id,payment_note,payment_proof_url)
+      VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+      .run(id,date,flatCustomer.name,flatCustomer.phone,flatCustomer.city,flatCustomer.address,subtotal,delivery,total,payment_method,body.status || 'New',payment_status,transaction_id,payment_note,proofUrl);
+
+    db.prepare('DELETE FROM order_items WHERE order_id=?').run(id);
     const itemStmt = db.prepare(`INSERT INTO order_items(order_id,product_id,name,category,price,qty,img) VALUES(?,?,?,?,?,?,?)`);
-    items.forEach(it=>itemStmt.run(id,it.product_id||it.id||null,it.name||'Product',it.category||it.cat||'',Number(it.price)||0,Number(it.qty)||1,it.img||''));
+    items.forEach(it=>itemStmt.run(id,it.product_id||it.id||null,it.name||it.n||'Product',it.category||it.cat||'',Number(it.price)||0,Number(it.qty)||1,it.img||''));
   });
   tx();
-  const order = buildOrder(id);
-  res.status(201).json({ok:true, order});
+  res.status(201).json({ok:true, order:buildOrder(id)});
 });
 
 
@@ -261,8 +332,9 @@ app.post('/api/admin/products', auth, upload.single('image'), (req,res)=>{
   const body = req.body || {};
   const nextId = (db.prepare('SELECT MAX(id) AS m FROM products').get().m || 0) + 1;
   const img = req.file ? `/uploads/${req.file.filename}` : (body.img || '');
-  db.prepare(`INSERT INTO products(id,cat,name,urdu,wt,price,comp,shape,hot,disc,img,realProductPhoto,realPhotoSource,stock)
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(nextId,body.cat||'Insecticides',body.name||'New Product',body.urdu||'',body.wt||'',Number(body.price)||0,body.comp||'',body.shape||'bottle',body.hot==='true'||body.hot==='1'?1:0,Number(body.disc)||0,img,req.file?1:0,req.file?'admin uploaded product photo':body.realPhotoSource||'',Number(body.stock)||0);
+  const stockStatus = body.stock_status || body.stockStatus || (body.outOfStock==='1'||body.outOfStock==='true' ? 'out' : 'in');
+  db.prepare(`INSERT INTO products(id,cat,name,urdu,wt,price,comp,shape,hot,disc,img,realProductPhoto,realPhotoSource,stock,stock_status,out_of_stock)
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(nextId,body.cat||'Insecticides',body.name||'New Product',body.urdu||'',body.wt||'',Number(body.price)||0,body.comp||'',body.shape||'bottle',body.hot==='true'||body.hot==='1'?1:0,Number(body.disc)||0,img,req.file?1:0,req.file?'admin uploaded product photo':body.realPhotoSource||'',Number(body.stock)||0,stockStatus,stockStatus==='out'?1:0);
   res.status(201).json({ok:true, product:productRowToClient(db.prepare('SELECT * FROM products WHERE id=?').get(nextId))});
 });
 app.put('/api/admin/products/:id', auth, upload.single('image'), (req,res)=>{
@@ -270,8 +342,9 @@ app.put('/api/admin/products/:id', auth, upload.single('image'), (req,res)=>{
   if(!existing) return res.status(404).json({error:'Product not found'});
   const b = req.body || {};
   const img = req.file ? `/uploads/${req.file.filename}` : (b.img !== undefined ? b.img : existing.img);
-  db.prepare(`UPDATE products SET cat=?,name=?,urdu=?,wt=?,price=?,comp=?,shape=?,hot=?,disc=?,img=?,realProductPhoto=?,realPhotoSource=?,stock=?,updated_at=CURRENT_TIMESTAMP WHERE id=?`)
-    .run(b.cat||existing.cat,b.name||existing.name,b.urdu??existing.urdu,b.wt??existing.wt,Number(b.price??existing.price),b.comp??existing.comp,b.shape??existing.shape,(b.hot==='true'||b.hot==='1'||b.hot===true)?1:0,Number(b.disc??existing.disc),img,req.file?1:(b.realProductPhoto==='true'||b.realProductPhoto==='1'||existing.realProductPhoto?1:0),req.file?'admin uploaded product photo':(b.realPhotoSource??existing.realPhotoSource),Number(b.stock??existing.stock),req.params.id);
+  const stockStatus = b.stock_status || b.stockStatus || (b.outOfStock==='1'||b.outOfStock==='true' ? 'out' : (existing.stock_status || 'in'));
+  db.prepare(`UPDATE products SET cat=?,name=?,urdu=?,wt=?,price=?,comp=?,shape=?,hot=?,disc=?,img=?,realProductPhoto=?,realPhotoSource=?,stock=?,stock_status=?,out_of_stock=?,updated_at=CURRENT_TIMESTAMP WHERE id=?`)
+    .run(b.cat||existing.cat,b.name||existing.name,b.urdu??existing.urdu,b.wt??existing.wt,Number(b.price??existing.price),b.comp??existing.comp,b.shape??existing.shape,(b.hot==='true'||b.hot==='1'||b.hot===true)?1:0,Number(b.disc??existing.disc),img,req.file?1:(b.realProductPhoto==='true'||b.realProductPhoto==='1'||existing.realProductPhoto?1:0),req.file?'admin uploaded product photo':(b.realPhotoSource??existing.realPhotoSource),Number(b.stock??existing.stock),stockStatus,stockStatus==='out'?1:0,req.params.id);
   res.json({ok:true, product:productRowToClient(db.prepare('SELECT * FROM products WHERE id=?').get(req.params.id))});
 });
 app.post('/api/admin/products/:id/image', auth, upload.single('image'), (req,res)=>{
@@ -289,7 +362,7 @@ function buildOrder(id){
   const o = db.prepare('SELECT * FROM orders WHERE id=?').get(id);
   if(!o) return null;
   const items = db.prepare('SELECT product_id AS id, name, category AS cat, price, qty, img FROM order_items WHERE order_id=?').all(id);
-  return {id:o.id,date:o.date,name:o.customer_name,phone:o.phone,city:o.city,address:o.address,items,subtotal:o.subtotal,delivery:o.delivery,total:o.total,status:o.status,payment_method:o.payment_method,created_at:o.created_at};
+  return {id:o.id,date:o.date,name:o.customer_name,phone:o.phone,city:o.city,address:o.address,items,subtotal:o.subtotal,delivery:o.delivery,total:o.total,status:o.status,payment_method:o.payment_method,paymentMethod:o.payment_method,payment_status:o.payment_status||'Pending',paymentStatus:o.payment_status||'Pending',transaction_id:o.transaction_id||'',transactionId:o.transaction_id||'',payment_note:o.payment_note||'',paymentNote:o.payment_note||'',payment_proof_url:o.payment_proof_url||'',paymentProofUrl:o.payment_proof_url||'',paymentProof:o.payment_proof_url?{url:o.payment_proof_url,data:o.payment_proof_url}:null,created_at:o.created_at};
 }
 
 app.get('/api/admin/settings', auth, (req,res)=>res.json(getSettings()));
@@ -359,7 +432,12 @@ app.get('/api/admin/orders', auth, (req,res)=>{
 app.put('/api/admin/orders/:id/status', auth, (req,res)=>{
   const allowed = new Set(['New','Pending','Completed','Cancelled']);
   const status = allowed.has(req.body.status) ? req.body.status : 'New';
-  db.prepare('UPDATE orders SET status=? WHERE id=?').run(status, req.params.id);
+  const paymentStatus = req.body.paymentStatus || req.body.payment_status || null;
+  if(paymentStatus){
+    db.prepare('UPDATE orders SET status=?, payment_status=? WHERE id=?').run(status, paymentStatus, req.params.id);
+  } else {
+    db.prepare('UPDATE orders SET status=? WHERE id=?').run(status, req.params.id);
+  }
   res.json({ok:true, order:buildOrder(req.params.id)});
 });
 app.get('/api/admin/accounts/summary', auth, (req,res)=>{
