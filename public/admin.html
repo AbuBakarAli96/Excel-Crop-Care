@@ -1,116 +1,907 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Excel Crop Care — Admin Backend</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Excel Crop Care — Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--g:#1b6e1b;--g2:#2d8a2d;--o:#e65100;--r:#c62828;--b:#e3eadf;--bg:#f4f7f2;--txt:#1d271d;--mut:#6a756a;--card:#fff;--shadow:0 12px 35px rgba(21,70,25,.10)}*{box-sizing:border-box}body{font-family:Poppins,sans-serif;margin:0;background:linear-gradient(135deg,#f4f7f2,#eef8ee);color:var(--txt);font-size:13px}button,input,select,textarea{font-family:inherit}.top{background:linear-gradient(135deg,#123512,#1b6e1b);color:#fff;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.18)}.brand{display:flex;align-items:center;gap:12px}.brand img{width:54px;height:54px;object-fit:contain;background:#fff;border-radius:14px;padding:5px}.brand h1{font-size:18px;margin:0;font-weight:900}.brand span{font-family:'Noto Nastaliq Urdu';display:block;font-size:13px;color:#ffe082;margin-top:2px}.wrap{max-width:1250px;margin:18px auto;padding:0 14px}.card{background:var(--card);border:1px solid var(--b);border-radius:18px;padding:18px;margin-bottom:15px;box-shadow:var(--shadow)}.login{max-width:430px;margin:42px auto;text-align:center}.login img{height:78px;object-fit:contain;margin-bottom:10px}.fg{margin-bottom:10px}.fg label{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#536153;margin-bottom:5px}.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;border:1.5px solid var(--b);border-radius:11px;outline:none;background:#fff;font-size:13px}.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(27,110,27,.09)}.btn{border:0;border-radius:11px;padding:9px 14px;font-weight:900;cursor:pointer;font-size:12px;transition:.18s}.green{background:var(--g2);color:#fff}.green:hover{background:var(--g)}.red{background:var(--r);color:#fff}.gray{background:#edf2ed;color:#333}.orange{background:var(--o);color:#fff}.dark{background:#172217;color:#fff}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.stat{background:linear-gradient(135deg,#f0fff0,#fff);border:1px solid #cbe8cb;border-radius:16px;padding:14px}.stat b{font-size:24px;color:var(--g)}.stat span{color:var(--mut);font-size:11px;font-weight:700}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tab{background:#fff;border:1px solid var(--b);padding:10px 14px;border-radius:12px;font-weight:900;cursor:pointer}.tab.on{background:var(--g);color:#fff}.hidden{display:none!important}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.actions{display:flex;gap:7px;flex-wrap:wrap}.small{font-size:11px;color:#777}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;border-radius:30px;font-size:13px;opacity:0;transition:.25s;z-index:99}.toast.on{opacity:1}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px;border-bottom:1px solid #edf2ed;text-align:left;vertical-align:middle}th{background:#f6faf6;color:#455;position:sticky;top:86px}.pimg{width:54px;height:54px;object-fit:contain;border-radius:10px;background:#f5f5f5;border:1px solid #eee}.preview{width:130px;height:115px;object-fit:contain;border:1px solid var(--b);border-radius:12px;background:#fafafa;margin-top:8px}.heroPreview{width:100%;max-height:170px;object-fit:cover;border:1px solid var(--b);border-radius:14px;background:#eee;margin-top:8px}.deal-builder{display:grid;grid-template-columns:360px 1fr;gap:16px}.product-picker{max-height:480px;overflow:auto;border:1px solid var(--b);border-radius:14px;background:#fbfdfb}.pick{display:grid;grid-template-columns:28px 52px 1fr 105px;gap:9px;align-items:center;padding:8px;border-bottom:1px solid #eef3ee}.pick input[type=checkbox]{width:18px;height:18px;accent-color:var(--o)}.mediaGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}.mediaCard{border:1px solid var(--b);border-radius:14px;overflow:hidden;background:#fff}.mediaCard img{width:100%;height:120px;object-fit:cover;background:#eee}.mediaCard div{padding:9px}.urlbox{font-size:10px;background:#f6f8f6;border:1px dashed #ccd5cc;border-radius:8px;padding:6px;word-break:break-all;cursor:pointer}.pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#fff3e0;color:#b44700;padding:4px 8px;font-size:10px;font-weight:900}.sectionTitle{display:flex;justify-content:space-between;align-items:center;gap:10px}.sectionTitle h2{margin:0 0 12px;font-size:18px}.urdu{font-family:'Noto Nastaliq Urdu'}@media(max-width:850px){.row,.row3,.deal-builder{grid-template-columns:1fr}.top{display:block}.brand{margin-bottom:10px}.pick{grid-template-columns:28px 45px 1fr}.pick .dealPrice{grid-column:3/5}.actions .btn{flex:1}}
-.admin-logo-preview-note{background:#f8fff9;border:1px dashed #9ed2aa;border-radius:12px;padding:8px;margin-top:6px;color:#0f5132;font-size:11px;font-weight:700}</style></head><body>
-<div class="top"><div class="brand"><img id="topLogo" src="" alt="Logo"><div><h1 id="topName">Excel Crop Care Admin Backend</h1><span id="topUrdu">ایڈمن پینل</span></div></div><div class="actions"><a href="/" style="color:#fff;text-decoration:none;font-weight:800">View Website</a><button class="btn orange" onclick="logout()">Logout</button></div></div>
-<div class="wrap">
-  <div id="loginBox" class="card login"><img id="loginLogo" src="" alt="Logo"><h2>Admin Login</h2><p class="small"></p><div class="fg"><label>Username</label><input id="u" value="admin"></div><div class="fg"><label>Password</label><input id="p" type="password" value="excel2026"></div><button class="btn green" onclick="login()">Login</button></div>
-  <div id="app" class="hidden">
-    <div class="grid" id="stats"></div>
-    <div class="tabs"><button class="tab on" onclick="show('products',this)">Products</button><button class="tab" onclick="show('deals',this)">Deals</button><button class="tab" onclick="show('media',this)">Images</button><button class="tab" onclick="show('settings',this)">Website Settings</button><button class="tab" onclick="show('orders',this)">Orders</button><button class="tab" onclick="show('accounts',this)">Accounts</button></div>
-
-    <section id="products" class="card"><div class="sectionTitle"><h2>Product Database + Image Upload</h2><span class="pill">Backend saved</span></div><div class="row"><div><div class="fg"><label>Product ID for edit</label><input id="pid" placeholder="Leave empty for new product"></div><div class="fg"><label>Name</label><input id="name"></div><div class="fg"><label>Urdu Name</label><input id="urdu" dir="rtl"></div><div class="row"><div class="fg"><label>Category</label><select id="cat"><option>Insecticides</option><option>Fungicides</option><option>Herbicides</option><option>Fertilizers</option><option>Micronutrients</option><option>Seeds</option></select></div><div class="fg"><label>Pack Size</label><input id="wt"></div></div></div><div><div class="row"><div class="fg"><label>Price</label><input id="price" type="number"></div><div class="fg"><label>Stock</label><input id="stock" type="number" value="0"></div></div><div class="fg"><label>Formula / Composition</label><input id="comp"></div><div class="fg"><label>Hot?</label><select id="hot"><option value="0">No</option><option value="1">Yes</option></select></div><div class="fg"><label>Product Image</label><input id="image" type="file" accept="image/*" onchange="previewImg(this,'prev')"><img id="prev" class="preview hidden"></div></div></div><div class="actions"><button class="btn green" onclick="saveProduct()">Save Product</button><button class="btn gray" onclick="clearProductForm()">Clear</button><button class="btn orange" onclick="loadProducts()">Refresh</button></div>
-<div class="bulk-rate-box">
-  <div class="sectionTitle" style="margin-top:16px"><h2>Bulk Product Rate Update</h2><span class="pill">List input</span></div>
-  <p class="small">Paste rates like <b>Product ID = price</b> or <b>Product Name = price</b>. Example: <code>1 = 450</code> or <code>ACELAM 26% WDG = 450</code>. One product per line.</p>
-  <textarea id="bulkRates" rows="7" placeholder="1 = 450&#10;ACELAM 26% WDG = 450&#10;MEGAFIT = 1200"></textarea>
-  <div class="actions"><button class="btn green" onclick="applyBulkRates()">Apply All Rates</button><button class="btn gray" onclick="bulkRates.value=''">Clear List</button></div>
-</div>
-<div id="productTable" style="margin-top:14px;overflow:auto"></div></section>
-
-    <section id="deals" class="card hidden"><div class="sectionTitle"><h2>Deal Management</h2><span class="pill">Shown on website Selected Deals</span></div><div class="deal-builder"><div><div class="fg"><label>Deal ID for edit</label><input id="dealId" placeholder="Leave empty for new deal"></div><div class="fg"><label>Deal Title</label><input id="dealTitle" placeholder="Rabi Season Mega Deal"></div><div class="fg"><label>Description / Text</label><textarea id="dealDesc" rows="3" placeholder="Short deal text for website"></textarea></div><div class="row"><div class="fg"><label>Style</label><select id="dealStyle"><option value="dark">Premium Dark</option><option value="green">Fresh Green</option><option value="gold">Golden Harvest</option><option value="red">Flash Red</option></select></div><div class="fg"><label>Active</label><select id="dealActive"><option value="1">Yes</option><option value="0">No</option></select></div></div><div class="fg"><label>End Date</label><input id="dealEnd" type="date"></div><div class="fg"><label>Deal Background Image URL</label><input id="dealBg" placeholder="/uploads/image.jpg or web URL"><div class="small">Upload image in Images tab, then paste/click URL here.</div></div><div class="actions"><button class="btn green" onclick="saveDeal()">Save Deal</button><button class="btn gray" onclick="clearDealForm()">Clear</button><button class="btn orange" onclick="loadDeals()">Refresh Deals</button></div><h3>Existing Deals</h3><div id="dealList"></div></div><div><div class="fg"><label>Select products and add manual deal price</label></div><div class="product-picker" id="dealProductPicker"></div></div></div></section>
-
-    <section id="media" class="card hidden"><div class="sectionTitle"><h2>🖼️ Image Library</h2><span class="pill">Logo • Background • Website images</span></div><div class="row"><div><div class="fg"><label>Image Label</label><input id="mediaLabel" placeholder="Hero background / Farmer image / Deal background"></div><div class="fg"><label>Upload any website image</label><input id="mediaFile" type="file" accept="image/*" onchange="previewImg(this,'mediaPrev')"><img id="mediaPrev" class="preview hidden"></div><button class="btn green" onclick="uploadMedia()">Upload Image</button></div><div><p class="small">Click any URL below to copy it. You can paste it in Settings or Deal Background field.</p></div></div><div class="mediaGrid" id="mediaGrid" style="margin-top:14px"></div></section>
-
-    <section id="settings" class="card hidden"><div class="sectionTitle"><h2>⚙️ Website Text + Company Information</h2><span class="pill">Changes public website</span></div><div class="row"><div><div class="fg"><label>Company Name</label><input id="set_company_name"></div><div class="fg"><label>Company Urdu Name</label><input id="set_company_urdu" dir="rtl"></div><div class="fg"><label>Urdu Slogan</label><input id="set_slogan_urdu" dir="rtl"></div><div class="fg"><label>Announcement Text</label><textarea id="set_announcement" rows="3"></textarea></div><div class="row"><div class="fg"><label>Phone</label><input id="set_phone"></div><div class="fg"><label>WhatsApp Number</label><input id="set_whatsapp"></div></div><div class="fg"><label>Address</label><textarea id="set_address" rows="2"></textarea></div><div class="fg"><label>Footer About Text</label><textarea id="set_footer_about" rows="3"></textarea></div></div><div><div class="fg"><label>Company Logo URL</label><input id="set_logo_url"><input type="file" id="up_logo_url" accept="image/*" onchange="uploadSettingImage('logo_url',this)"><img id="logoPreview" class="preview"><div class="admin-logo-preview-note">This logo appears in Admin, website header, home watermark and footer.</div></div><div class="fg"><label>Hero Background URL</label><input id="set_hero_background_url"><input type="file" id="up_hero_background_url" accept="image/*" onchange="uploadSettingImage('hero_background_url',this)"><img id="heroPreview" class="heroPreview"></div><div class="fg"><label>Expert/Farmer Image URL</label><input id="set_expert_image_url"><input type="file" id="up_expert_image_url" accept="image/*" onchange="uploadSettingImage('expert_image_url',this)"><img id="expertPreview" class="heroPreview"></div></div></div><div class="card" style="margin-top:14px;background:#fbfffb"><div class="sectionTitle"><h2>Policies + Delivery Controls</h2><span class="pill">Footer and policy pages</span></div><div class="row"><div><div class="fg"><label>Return Policy Text</label><textarea id="set_return_policy" rows="4" placeholder="7-day return policy, wrong/damaged products, invoice required..."></textarea></div><div class="fg"><label>Terms & Conditions</label><textarea id="set_terms_conditions" rows="4" placeholder="Use policy, payment terms, delivery responsibility..."></textarea></div></div><div><div class="fg"><label>FAQ's</label><textarea id="set_faq_text" rows="4" placeholder="Write FAQ questions and answers here"></textarea></div><div class="fg"><label>Free Delivery Formula</label><input id="set_free_delivery_formula" placeholder="Free delivery on orders Rs.2000+"></div><div class="fg"><label>Customer Support Dropdown Text</label><textarea id="set_customer_support_text" rows="3" placeholder="Support hours, WhatsApp rules, return help..."></textarea></div></div></div></div><button class="btn green" onclick="saveSettings()">Save Website Settings</button></section>
-
-    <section id="orders" class="card hidden"><h2>Admin Order Panel</h2><button class="btn orange" onclick="loadOrders()">Refresh Orders</button><div id="orderTable" style="margin-top:14px;overflow:auto"></div></section>
-    <section id="accounts" class="card hidden"><h2>Accounts Summary</h2><button class="btn green" onclick="loadSummary()">Recalculate</button><div id="summary" style="margin-top:14px;overflow:auto"></div></section>
-  </div>
-</div><div id="toast" class="toast"></div>
-<script>
-let token=localStorage.getItem('ecc_admin_token')||'';let products=[];let orders=[];let settings={};let deals=[];let media=[];
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2400)}
-async function api(url,opt={}){const headers=opt.body instanceof FormData?{}:{'Content-Type':'application/json'};if(token)headers.Authorization='Bearer '+token;const r=await fetch(url,{...opt,headers:{...headers,...(opt.headers||{})}});let data={};try{data=await r.json()}catch(e){}if(!r.ok)throw new Error(data.error||'Request failed');return data;}
-async function loadPublicSettings(){try{settings=await fetch('/api/site/settings').then(r=>r.json());applyAdminBrand()}catch(e){}}
-function applyAdminBrand(){const logo=settings.logo_url||'';if(logo){topLogo.src=logo;loginLogo.src=logo}else{topLogo.src='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"%3E%3Crect width="80" height="80" rx="18" fill="%231b6e1b"/%3E%3Ctext x="40" y="47" text-anchor="middle" font-family="Arial" font-size="20" font-weight="900" fill="white"%3EECC%3C/text%3E%3C/svg%3E';loginLogo.src=topLogo.src}topName.textContent=(settings.company_name||'Excel Crop Care')+' Admin Backend';topUrdu.textContent=settings.company_urdu||'ایڈمن پینل'}
-async function login(){try{const r=await api('/api/admin/login',{method:'POST',body:JSON.stringify({username:u.value,password:p.value})});token=r.token;localStorage.setItem('ecc_admin_token',token);boot();toast('Logged in')}catch(e){toast(e.message)}}
-function logout(){localStorage.removeItem('ecc_admin_token');token='';loginBox.classList.remove('hidden');app.classList.add('hidden')}
-async function boot(){try{await api('/api/admin/me');loginBox.classList.add('hidden');app.classList.remove('hidden');await Promise.all([loadSettings(),loadProducts(),loadOrders(),loadSummary(),loadDeals(),loadMedia()]);}catch(e){logout()}}
-function show(id,btn){document.querySelectorAll('section.card').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));btn.classList.add('on')}
-function previewImg(inp,id){const el=document.getElementById(id);if(inp.files&&inp.files[0]){el.src=URL.createObjectURL(inp.files[0]);el.classList.remove('hidden')}}
-function updateStats(){stats.innerHTML=`<div class="stat"><span>Products</span><br><b>${products.length}</b></div><div class="stat"><span>Deals</span><br><b>${deals.length}</b></div><div class="stat"><span>Orders</span><br><b>${orders.length}</b></div><div class="stat"><span>Backend</span><br><b>ON</b></div>`}
-function clearProductForm(){['pid','name','urdu','wt','price','stock','comp'].forEach(id=>document.getElementById(id).value='');image.value='';prev.classList.add('hidden')}
-async function loadProducts(){products=await api('/api/admin/products');renderProductPicker();productTable.innerHTML='<table><thead><tr><th>ID</th><th>Photo</th><th>Name</th><th>Category</th><th>Pack</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead><tbody>'+products.map(p=>`<tr><td>${p.id}</td><td><img class="pimg" src="${p.img||''}"></td><td><b>${p.name}</b><br><span class="small">${p.comp||''}</span></td><td>${p.cat}</td><td>${p.wt||''}</td><td>Rs.${Number(p.price||0).toLocaleString()}</td><td>${p.stock||0}</td><td class="actions"><button class="btn gray" onclick="editProduct(${p.id})">Edit</button><button class="btn red" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`).join('')+'</tbody></table>';updateStats()}
-function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;pid.value=p.id;name.value=p.name;urdu.value=p.urdu||'';cat.value=p.cat;wt.value=p.wt||'';price.value=p.price||0;stock.value=p.stock||0;comp.value=p.comp||'';hot.value=p.hot?'1':'0';if(p.img){prev.src=p.img;prev.classList.remove('hidden')}show('products',document.querySelectorAll('.tab')[0]);scrollTo({top:120,behavior:'smooth'})}
-async function saveProduct(){const fd=new FormData();['name','urdu','cat','wt','price','stock','comp','hot'].forEach(id=>fd.append(id,document.getElementById(id).value));if(image.files[0])fd.append('image',image.files[0]);try{if(pid.value)await api('/api/admin/products/'+pid.value,{method:'PUT',body:fd});else await api('/api/admin/products',{method:'POST',body:fd});toast('Product saved');clearProductForm();loadProducts()}catch(e){toast(e.message)}}
-async function deleteProduct(id){if(!confirm('Delete product?'))return;await api('/api/admin/products/'+id,{method:'DELETE'});toast('Deleted');loadProducts()}
-function renderProductPicker(selected={}){if(!dealProductPicker)return;dealProductPicker.innerHTML=products.map(p=>{const s=selected[p.id]||'';return `<div class="pick"><input type="checkbox" class="dealCheck" data-id="${p.id}" ${s?'checked':''}><img class="pimg" src="${p.img||''}"><div><b>${p.name}</b><br><span class="small">Rs.${Number(p.price||0).toLocaleString()} • ${p.wt||''}</span></div><input class="dealPrice" data-id="${p.id}" type="number" placeholder="Deal price" value="${s}"></div>`}).join('')}
-function clearDealForm(){dealId.value='';dealTitle.value='';dealDesc.value='';dealStyle.value='dark';dealActive.value='1';dealEnd.value='';dealBg.value='';renderProductPicker()}
-function getDealItemsFromForm(){return [...document.querySelectorAll('.dealCheck')].filter(c=>c.checked).map(c=>{const id=c.dataset.id;const price=document.querySelector(`.dealPrice[data-id="${id}"]`)?.value||0;return {product_id:Number(id),deal_price:Number(price)}}).filter(x=>x.product_id&&x.deal_price>0)}
-async function loadDeals(){deals=await api('/api/admin/deals');dealList.innerHTML=deals.length?deals.map(d=>`<div class="stat" style="margin-bottom:8px"><b style="font-size:15px">${d.active?'🟢':'⚪'} ${d.title}</b><br><span>${d.items.length} products • ${d.style} ${d.end_date?'• Ends '+d.end_date:''}</span><div class="actions" style="margin-top:8px"><button class="btn gray" onclick="editDeal(${d.id})">Edit</button><button class="btn red" onclick="deleteDeal(${d.id})">Delete</button></div></div>`).join(''):'<p class="small">No deals yet.</p>';updateStats()}
-function editDeal(id){const d=deals.find(x=>x.id===id);if(!d)return;dealId.value=d.id;dealTitle.value=d.title;dealDesc.value=d.description||'';dealStyle.value=d.style||'dark';dealActive.value=d.active?'1':'0';dealEnd.value=d.end_date||'';dealBg.value=d.bg_img||'';const selected={};(d.items||[]).forEach(i=>selected[i.product_id]=i.deal_price);renderProductPicker(selected);show('deals',document.querySelectorAll('.tab')[1]);scrollTo({top:120,behavior:'smooth'})}
-async function saveDeal(){const payload={title:dealTitle.value||'Special Deal',description:dealDesc.value,style:dealStyle.value,bg_img:dealBg.value,active:dealActive.value==='1',end_date:dealEnd.value,items:getDealItemsFromForm()};if(!payload.items.length){toast('Select at least one product and deal price');return}try{if(dealId.value)await api('/api/admin/deals/'+dealId.value,{method:'PUT',body:JSON.stringify(payload)});else await api('/api/admin/deals',{method:'POST',body:JSON.stringify(payload)});toast('Deal saved');clearDealForm();loadDeals()}catch(e){toast(e.message)}}
-async function deleteDeal(id){if(!confirm('Delete deal?'))return;await api('/api/admin/deals/'+id,{method:'DELETE'});toast('Deal deleted');loadDeals()}
-async function loadMedia(){media=await api('/api/admin/media');mediaGrid.innerHTML=media.map(m=>`<div class="mediaCard"><img src="${m.url}"><div><b>${m.label||'Image'}</b><div class="urlbox" onclick="copyText('${m.url}')">${m.url}</div></div></div>`).join('')||'<p class="small">No uploaded images yet.</p>'}
-async function uploadMedia(){if(!mediaFile.files[0]){toast('Choose image first');return}const fd=new FormData();fd.append('image',mediaFile.files[0]);fd.append('label',mediaLabel.value||'Website image');try{const r=await api('/api/admin/media',{method:'POST',body:fd});toast('Image uploaded: '+r.media.url);mediaLabel.value='';mediaFile.value='';mediaPrev.classList.add('hidden');loadMedia()}catch(e){toast(e.message)}}
-function copyText(t){navigator.clipboard?.writeText(t);toast('Image URL copied')}
-async function loadSettings(){settings=await api('/api/admin/settings');applyAdminBrand();['company_name','company_urdu','slogan_urdu','announcement','phone','whatsapp','address','footer_about','logo_url','hero_background_url','expert_image_url'].forEach(k=>{const el=document.getElementById('set_'+k);if(el)el.value=settings[k]||''});logoPreview.src=settings.logo_url||'';heroPreview.src=settings.hero_background_url||'';expertPreview.src=settings.expert_image_url||''}
-async function saveSettings(){const keys=['company_name','company_urdu','slogan_urdu','announcement','phone','whatsapp','address','footer_about','logo_url','hero_background_url','expert_image_url'];const payload={};keys.forEach(k=>payload[k]=document.getElementById('set_'+k).value);try{const r=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(payload)});settings=r.settings;applyAdminBrand();toast('Website settings saved')}catch(e){toast(e.message)}}
-async function uploadSettingImage(key,inp){if(!inp.files[0])return;const fd=new FormData();fd.append('image',inp.files[0]);try{const r=await api('/api/admin/settings/upload/'+key,{method:'POST',body:fd});settings=r.settings;document.getElementById('set_'+key).value=r.url;if(key==='logo_url')logoPreview.src=r.url;if(key==='hero_background_url')heroPreview.src=r.url;if(key==='expert_image_url')expertPreview.src=r.url;applyAdminBrand();loadMedia();toast('Image saved for '+key)}catch(e){toast(e.message)}}
-async function loadOrders(){orders=await api('/api/admin/orders');orderTable.innerHTML='<table><thead><tr><th>ID</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Update</th></tr></thead><tbody>'+orders.map(o=>`<tr><td>${o.id}</td><td>${o.date}</td><td><b>${o.name}</b><br>${o.phone}<br><span class="small">${o.city} - ${o.address}</span></td><td>${(o.items||[]).map(i=>`${i.name} x ${i.qty}`).join('<br>')}</td><td>Rs.${Number(o.total||0).toLocaleString()}</td><td>${o.status}</td><td><select onchange="setStatus('${o.id}',this.value)"><option ${o.status==='New'?'selected':''}>New</option><option ${o.status==='Pending'?'selected':''}>Pending</option><option ${o.status==='Completed'?'selected':''}>Completed</option><option ${o.status==='Cancelled'?'selected':''}>Cancelled</option></select></td></tr>`).join('')+'</tbody></table>';updateStats()}
-async function setStatus(id,status){await api('/api/admin/orders/'+id+'/status',{method:'PUT',body:JSON.stringify({status})});toast('Order updated');loadOrders();loadSummary()}
-async function loadSummary(){const s=await api('/api/admin/accounts/summary');summary.innerHTML=`<div class="grid"><div class="stat"><span>Total Orders</span><br><b>${s.orders}</b></div><div class="stat"><span>Net Sales</span><br><b>Rs.${Number(s.net).toLocaleString()}</b></div><div class="stat"><span>Completed</span><br><b>Rs.${Number(s.completed).toLocaleString()}</b></div><div class="stat"><span>Pending</span><br><b>Rs.${Number(s.pending).toLocaleString()}</b></div><div class="stat"><span>Units Sold</span><br><b>${s.units}</b></div></div><h3>Product-wise Revenue</h3><table><thead><tr><th>Product</th><th>Qty</th><th>Revenue</th></tr></thead><tbody>${s.byProduct.map(p=>`<tr><td>${p.name}</td><td>${p.qty}</td><td>Rs.${Number(p.revenue).toLocaleString()}</td></tr>`).join('')}</tbody></table>`;updateStats()}
-loadPublicSettings();if(token)boot();
-</script>
-<style id="ecc-admin-v5-css">
-.bulk-rate-box{background:#f8fff9;border:1px solid #cfe9d4;border-radius:14px;padding:14px;margin-top:14px}.bulk-rate-box textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:12px;font-family:Consolas,monospace;resize:vertical}.bulk-rate-box code{background:#eef8ef;padding:2px 5px;border-radius:5px}.brand img,#loginLogo{background:#fff;border:1px solid #dbeee0;object-fit:contain}
-</style>
-<script id="ecc-admin-v5-js">
-async function applyBulkRates(){
-  const box=document.getElementById('bulkRates'); if(!box) return;
-  const lines=box.value.split(/\n+/).map(x=>x.trim()).filter(Boolean);
-  if(!lines.length){toast('Paste rates first');return;}
-  let updated=0, skipped=[];
-  for(const line of lines){
-    const m=line.match(/^(.+?)[\s:=,\t]+([0-9]+(?:\.[0-9]+)?)$/);
-    if(!m){skipped.push(line);continue;}
-    const key=m[1].trim().toLowerCase(); const newPrice=Number(m[2]);
-    const p=products.find(x=>String(x.id)===key || String(x.name||'').toLowerCase()===key || String(x.name||'').toLowerCase().includes(key));
-    if(!p){skipped.push(line);continue;}
-    const fd=new FormData(); fd.append('price', newPrice);
-    try{ await api('/api/admin/products/'+p.id,{method:'PUT',body:fd}); updated++; }catch(e){ skipped.push(line); }
-  }
-  await loadProducts();
-  toast(`Updated ${updated} rates${skipped.length?'; skipped '+skipped.length:''}`);
-  if(skipped.length) alert('Skipped lines:\n'+skipped.join('\n'));
+:root{
+  --green:#0f7a34;
+  --green2:#159447;
+  --green3:#eaf7ef;
+  --blue:#159bd6;
+  --orange:#e85d04;
+  --red:#d62828;
+  --text:#17231b;
+  --muted:#66736b;
+  --line:#dbeadf;
+  --bg:#f6fbf7;
+  --card:#ffffff;
+  --shadow:0 10px 30px rgba(15,122,52,.10);
+  --radius:16px;
 }
-</script>
-
-<style id="ecc-admin-v6-css">
-/* V6 admin cleanup */
-th{position:static!important;top:auto!important}.tableWrap{max-height:520px;overflow:auto;border:1px solid #e0ece0;border-radius:14px;background:#fff}.tableWrap table{min-width:850px}.deal-live-preview{border:1px solid #dbeedb;border-radius:18px;padding:16px;background:linear-gradient(135deg,#f7fff7,#fff);margin-top:14px;box-shadow:0 10px 28px rgba(27,110,27,.08)}.deal-live-card{min-height:180px;border-radius:16px;padding:18px;background:linear-gradient(135deg,rgba(12,45,16,.88),rgba(27,110,27,.74)),url('/assets/ecc-custom/sprayer-field.jpg');background-size:cover;background-position:center;color:#fff;display:flex;gap:16px;align-items:center}.deal-live-card img{width:120px;height:120px;object-fit:contain;background:#fff;border-radius:14px;padding:8px}.deal-live-card h3{margin:0 0 6px;font-size:22px}.deal-live-card p{margin:0 0 10px;color:#f0fff0}.deal-live-price{display:flex;gap:8px;flex-wrap:wrap}.deal-live-price span{background:#fff;color:#0b5f27;border-radius:999px;padding:7px 10px;font-weight:900}.media-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.media-actions button{font-size:10px;padding:6px 7px;border-radius:8px}.admin-help-note{background:#fff8e1;border:1px solid #ffe0a8;border-radius:12px;padding:9px 11px;color:#6b4300;font-size:11px;font-weight:700;margin-bottom:10px}.sectionTitle h2{line-height:1.25}.card h2{margin-top:0}.policy-card{background:#fbfffb!important}
-</style>
-<script id="ecc-admin-v6-js">
-(function(){
-  const extraSettingKeys=['company_name','company_urdu','slogan_urdu','announcement','phone','whatsapp','address','footer_about','logo_url','hero_background_url','expert_image_url','return_policy','terms_conditions','faq_text','free_delivery_formula','customer_support_text'];
-  window.loadProducts=async function(){products=await api('/api/admin/products');renderProductPicker();productTable.innerHTML='<div class="admin-help-note">Product header stays above the product list now. Scroll inside this box only.</div><div class="tableWrap"><table><thead><tr><th>ID</th><th>Photo</th><th>Name</th><th>Category</th><th>Pack</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead><tbody>'+products.map(p=>`<tr><td>${p.id}</td><td><img class="pimg" src="${p.img||''}"></td><td><b>${p.name}</b><br><span class="small">${p.comp||''}</span></td><td>${p.cat}</td><td>${p.wt||''}</td><td>Rs.${Number(p.price||0).toLocaleString()}</td><td>${p.stock||0}</td><td class="actions"><button class="btn gray" onclick="editProduct(${p.id})">Edit</button><button class="btn red" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`).join('')+'</tbody></table></div>';updateStats();updateDealPreview();}
-  window.loadOrders=async function(){orders=await api('/api/admin/orders');orderTable.innerHTML='<div class="admin-help-note">Order header is fixed correctly above the order list.</div><div class="tableWrap"><table><thead><tr><th>ID</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Update</th></tr></thead><tbody>'+orders.map(o=>`<tr><td>${o.id}</td><td>${o.date}</td><td><b>${o.name}</b><br>${o.phone}<br><span class="small">${o.city} - ${o.address}</span></td><td>${(o.items||[]).map(i=>`${i.name} x ${i.qty}`).join('<br>')}</td><td>Rs.${Number(o.total||0).toLocaleString()}</td><td>${o.status}</td><td><select onchange="setStatus('${o.id}',this.value)"><option ${o.status==='New'?'selected':''}>New</option><option ${o.status==='Pending'?'selected':''}>Pending</option><option ${o.status==='Completed'?'selected':''}>Completed</option><option ${o.status==='Cancelled'?'selected':''}>Cancelled</option></select></td></tr>`).join('')+'</tbody></table></div>';updateStats();}
-  function firstSelectedDealProduct(){const checked=document.querySelector('.dealCheck:checked'); if(!checked) return products[0]||{}; return products.find(p=>String(p.id)===String(checked.dataset.id))||products[0]||{};}
-  window.updateDealPreview=function(){
-    let box=document.getElementById('dealPreviewBox'); if(!box){const host=document.querySelector('#deals .deal-builder > div:first-child'); if(!host) return; box=document.createElement('div'); box.id='dealPreviewBox'; box.className='deal-live-preview'; host.appendChild(box);}
-    const p=firstSelectedDealProduct(); const title=document.getElementById('dealTitle')?.value||'Special Deal'; const desc=document.getElementById('dealDesc')?.value||'Deal preview will update while admin edits title, image and selected products.'; const bg=document.getElementById('dealBg')?.value||'/assets/ecc-custom/sprayer-field.jpg'; const img=p.img||'/assets/ecc-custom/ecc-logo-watermark.png'; const priceInput=p.id?document.querySelector(`.dealPrice[data-id="${p.id}"]`):null; const dealPrice=priceInput?.value||Math.round(Number(p.price||0)*0.8)||0;
-    box.innerHTML=`<h3 style="margin:0 0 10px;color:#0b5f27">Live Deal Preview</h3><div class="deal-live-card" style="background-image:linear-gradient(135deg,rgba(12,45,16,.88),rgba(27,110,27,.70)),url('${bg}')"><img src="${img}"><div><h3>${title}</h3><p>${desc}</p><b>${p.name||'Select product'}</b><div class="deal-live-price"><span>Original Rs.${Number(p.price||0).toLocaleString()}</span><span>Deal Rs.${Number(dealPrice||0).toLocaleString()}</span></div></div></div>`;
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Poppins",sans-serif;
+  background:linear-gradient(135deg,#f8fff9,#eef8f2);
+  color:var(--text);
+  min-height:100vh;
+}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer;border:none}
+img{max-width:100%;display:block}
+.hidden{display:none!important}
+.urdu{font-family:"Noto Nastaliq Urdu",serif;direction:rtl}
+.login-wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(21,155,214,.12),transparent 28%),
+    radial-gradient(circle at 80% 80%,rgba(15,122,52,.14),transparent 30%),
+    linear-gradient(135deg,#ffffff,#eefaf2);
+}
+.login-card{
+  width:100%;
+  max-width:440px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:0 24px 70px rgba(0,0,0,.12);
+  padding:28px;
+}
+.login-logo{
+  display:flex;
+  justify-content:center;
+  margin-bottom:18px;
+}
+.login-logo img{
+  height:92px;
+  object-fit:contain;
+}
+.login-card h1{
+  font-size:25px;
+  color:var(--green);
+  text-align:center;
+  margin-bottom:4px;
+}
+.login-card p{
+  font-size:13px;
+  color:var(--muted);
+  text-align:center;
+  margin-bottom:22px;
+}
+.field{margin-bottom:14px}
+.field label{
+  display:block;
+  font-size:12px;
+  font-weight:800;
+  color:#34513d;
+  margin-bottom:6px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+.field input,.field select,.field textarea{
+  width:100%;
+  padding:12px 13px;
+  border:1.6px solid var(--line);
+  border-radius:12px;
+  font-size:14px;
+  outline:none;
+  background:#fff;
+  transition:.2s;
+}
+.field textarea{min-height:96px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--green2);
+  box-shadow:0 0 0 4px rgba(15,122,52,.08);
+}
+.login-error{
+  background:#fff0f0;
+  color:var(--red);
+  border:1px solid #ffd0d0;
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:14px;
+  display:none;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border-radius:12px;
+  padding:11px 16px;
+  font-size:13px;
+  font-weight:800;
+  transition:.18s;
+}
+.btn.primary{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff}
+.btn.primary:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(15,122,52,.22)}
+.btn.orange{background:var(--orange);color:#fff}
+.btn.red{background:var(--red);color:#fff}
+.btn.ghost{background:#f2f8f4;color:var(--green);border:1px solid var(--line)}
+.btn.full{width:100%}
+.tip{
+  margin-top:14px;
+  font-size:11px;
+  color:#8a968e;
+  text-align:center;
+}
+.admin-shell{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:100vh;
+}
+.sidebar{
+  background:#fff;
+  border-right:1px solid var(--line);
+  padding:18px 14px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+}
+.brand{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:8px 10px 18px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:12px;
+}
+.brand img{
+  width:84px;
+  height:58px;
+  object-fit:contain;
+}
+.brand h2{
+  font-size:15px;
+  line-height:1.1;
+  color:var(--green);
+  font-weight:900;
+}
+.brand span{font-size:10px;color:var(--muted)}
+.navbtn{
+  width:100%;
+  padding:12px 13px;
+  border-radius:12px;
+  background:transparent;
+  color:#34513d;
+  text-align:left;
+  font-weight:800;
+  margin-bottom:6px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transition:.18s;
+}
+.navbtn:hover,.navbtn.active{
+  background:var(--green3);
+  color:var(--green);
+}
+.navbtn.active{box-shadow:inset 4px 0 0 var(--green)}
+.main{
+  padding:20px;
+  min-width:0;
+}
+.topbar{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:14px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  box-shadow:var(--shadow);
+  margin-bottom:18px;
+}
+.topbar h1{
+  font-size:22px;
+  color:var(--green);
+  font-weight:900;
+}
+.topbar p{font-size:12px;color:var(--muted)}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.grid4{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:18px;
+}
+.stat{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+.stat b{display:block;font-size:26px;color:var(--green);line-height:1}
+.stat span{font-size:12px;color:var(--muted);font-weight:700}
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  padding:18px;
+  margin-bottom:18px;
+}
+.card h3{
+  font-size:16px;
+  color:var(--green);
+  margin-bottom:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+.card .sub{
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  font-weight:500;
+  margin-top:3px;
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.form-grid.three{grid-template-columns:repeat(3,1fr)}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th{
+  background:#f2f8f4;
+  color:#294b34;
+  text-align:left;
+  padding:11px;
+  font-size:12px;
+  white-space:nowrap;
+}
+td{
+  border-top:1px solid #eef5f0;
+  padding:10px 11px;
+  font-size:12px;
+  vertical-align:middle;
+}
+tr:hover td{background:#fbfffc}
+.pthumb{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#f9fff9;
+  padding:4px;
+}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.smallbtn{
+  padding:7px 10px;
+  border-radius:10px;
+  font-size:11px;
+  font-weight:800;
+}
+.smallbtn.edit{background:#e7f6ff;color:#087db4}
+.smallbtn.del{background:#fff0f0;color:var(--red)}
+.smallbtn.view{background:#f2f8f4;color:var(--green)}
+.status{
+  display:inline-flex;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+}
+.status.new{background:#fff4e6;color:#c85200}
+.status.done{background:#eaf7ef;color:var(--green)}
+.status.cancel{background:#fff0f0;color:var(--red)}
+.tab{display:none}
+.tab.active{display:block}
+.notice{
+  background:#fff9e6;
+  border:1px solid #ffe0a3;
+  color:#714200;
+  padding:12px;
+  border-radius:14px;
+  font-size:12px;
+  line-height:1.6;
+  margin-bottom:14px;
+}
+.bank-preview{
+  background:linear-gradient(135deg,#f7fff8,#eef9ff);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  font-size:13px;
+  line-height:1.8;
+}
+.bank-preview strong{color:var(--green)}
+.logo-preview{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:#f8fff9;
+  border:1px dashed #b9dbc4;
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:12px;
+}
+.logo-preview img{
+  width:170px;
+  height:90px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:12px;
+  border:1px solid var(--line);
+  padding:8px;
+}
+.footer-note{
+  text-align:center;
+  color:#8a968e;
+  font-size:11px;
+  margin:22px 0 8px;
+}
+@media(max-width:900px){
+  .admin-shell{grid-template-columns:1fr}
+  .sidebar{
+    position:static;
+    height:auto;
+    border-right:none;
+    border-bottom:1px solid var(--line);
   }
-  const oldRenderPicker=window.renderProductPicker;
-  window.renderProductPicker=function(selected={}){oldRenderPicker(selected);document.querySelectorAll('.dealCheck,.dealPrice').forEach(el=>el.addEventListener('input',updateDealPreview));updateDealPreview();}
-  window.loadMedia=async function(){media=await api('/api/admin/media');mediaGrid.innerHTML=media.map(m=>`<div class="mediaCard"><img src="${m.url}"><div><b>${m.label||'Image'}</b><div class="urlbox" onclick="copyText('${m.url}')">${m.url}</div><div class="media-actions"><button class="btn gray" onclick="setImageTarget('dealBg','${m.url}')">Use for Deal BG</button><button class="btn gray" onclick="setImageTarget('set_hero_background_url','${m.url}')">Use Home Hero</button><button class="btn gray" onclick="setImageTarget('set_logo_url','${m.url}')">Use Logo</button><button class="btn gray" onclick="setImageTarget('set_expert_image_url','${m.url}')">Use Expert</button></div></div></div>`).join('')||'<p class="small">No uploaded images yet.</p>';}
-  window.setImageTarget=function(id,url){const el=document.getElementById(id); if(el){el.value=url; el.dispatchEvent(new Event('input')); toast('Image placed in '+id); if(id==='dealBg')updateDealPreview(); if(id==='set_logo_url')logoPreview.src=url; if(id==='set_hero_background_url')heroPreview.src=url; if(id==='set_expert_image_url')expertPreview.src=url;} else {navigator.clipboard?.writeText(url); toast('Image URL copied');}}
-  window.loadSettings=async function(){settings=await api('/api/admin/settings');applyAdminBrand();extraSettingKeys.forEach(k=>{const el=document.getElementById('set_'+k);if(el)el.value=settings[k]||''});logoPreview.src=settings.logo_url||'';heroPreview.src=settings.hero_background_url||'';expertPreview.src=settings.expert_image_url||'';}
-  window.saveSettings=async function(){const payload={};extraSettingKeys.forEach(k=>{const el=document.getElementById('set_'+k); if(el) payload[k]=el.value;});try{const r=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(payload)});settings=r.settings;applyAdminBrand();toast('Website settings and policies saved')}catch(e){toast(e.message)}}
-  document.addEventListener('DOMContentLoaded',()=>{['dealTitle','dealDesc','dealBg','dealStyle','dealActive','dealEnd'].forEach(id=>{const el=document.getElementById(id); if(el) el.addEventListener('input',updateDealPreview);}); setTimeout(updateDealPreview,700);});
-})();
-</script>
+  .brand{justify-content:center;text-align:center}
+  .nav-list{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+  .navbtn{white-space:nowrap;flex:0 0 auto;width:auto}
+  .grid4{grid-template-columns:repeat(2,1fr)}
+  .form-grid,.form-grid.three{grid-template-columns:1fr}
+  .topbar{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:520px){
+  .main{padding:12px}
+  .grid4{grid-template-columns:1fr}
+  .login-card{padding:20px}
+  .topbar h1{font-size:18px}
+}
+</style>
+</head>
+<body>
 
-</body></html>
+<section id="loginScreen" class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <img id="loginLogo" src="assets/ecc-custom/excel-crop-group-logo.png" alt="Excel Crop Group Logo" onerror="this.src='assets/ecc-custom/ecc-logo-watermark.png'">
+    </div>
+    <h1>Admin Login</h1>
+    <p>Excel Crop Care / Excel Crop Group control panel</p>
+    <div id="loginError" class="login-error">Wrong username or password.</div>
+    <div class="field">
+      <label>Username</label>
+      <input id="loginUser" type="text" placeholder="admin">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="loginPass" type="password" placeholder="Password">
+    </div>
+    <button class="btn primary full" onclick="loginAdmin()">Login</button>
+    <div class="tip">Default: <strong>admin</strong> / <strong>excel2026</strong>. You can change password from settings.</div>
+  </div>
+</section>
+
+<section id="adminScreen" class="admin-shell hidden">
+  <aside class="sidebar">
+    <div class="brand">
+      <img id="sideLogo" src="assets/ecc-custom/excel-crop-group-logo.png" alt="Excel Crop Group Logo" onerror="this.src='assets/ecc-custom/ecc-logo-watermark.png'">
+      <div>
+        <h2>Excel Crop Care</h2>
+        <span>Admin Dashboard</span>
+      </div>
+    </div>
+    <div class="nav-list">
+      <button class="navbtn active" onclick="showTab('dashboard',this)">📊 Dashboard</button>
+      <button class="navbtn" onclick="showTab('products',this)">📦 Products</button>
+      <button class="navbtn" onclick="showTab('orders',this)">🧾 Orders</button>
+      <button class="navbtn" onclick="showTab('deals',this)">🔥 Deals</button>
+      <button class="navbtn" onclick="showTab('bank',this)">🏦 Bank Transfer</button>
+      <button class="navbtn" onclick="showTab('policies',this)">📜 Policies</button>
+      <button class="navbtn" onclick="showTab('settings',this)">⚙️ Settings</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="topTitle">Admin Dashboard</h1>
+        <p>Manage products, orders, bank transfer info, policies and website settings.</p>
+      </div>
+      <div class="top-actions">
+        <button class="btn ghost" onclick="openStore()">Open Website</button>
+        <button class="btn orange" onclick="exportData()">Export Data</button>
+        <button class="btn red" onclick="logoutAdmin()">Logout</button>
+      </div>
+    </div>
+
+    <section id="tab-dashboard" class="tab active">
+      <div class="grid4">
+        <div class="stat"><b id="statProducts">0</b><span>Products</span></div>
+        <div class="stat"><b id="statOrders">0</b><span>Orders</span></div>
+        <div class="stat"><b id="statDeals">0</b><span>Active Deals</span></div>
+        <div class="stat"><b>100+</b><span>Product Range</span></div>
+      </div>
+      <div class="card">
+        <h3>Quick Status</h3>
+        <div class="notice">
+          This admin panel uses browser storage for quick editing. For professional permanent admin data, connect these fields with your backend/database API later.
+        </div>
+        <div class="bank-preview" id="dashBankPreview"></div>
+      </div>
+    </section>
+
+    <section id="tab-products" class="tab">
+      <div class="card">
+        <h3><span id="productFormTitle">Add Product</span><button class="btn ghost" onclick="resetProductForm()">Clear Form</button></h3>
+        <input type="hidden" id="productEditId">
+        <div class="form-grid three">
+          <div class="field"><label>Product Name</label><input id="pName" placeholder="ACELAM 26% WDG"></div>
+          <div class="field"><label>Formula / Active Ingredient</label><input id="pFormula" placeholder="Acetamiprid 20% + Lambda Cyhalothrin 6%"></div>
+          <div class="field"><label>Category</label>
+            <select id="pCategory">
+              <option>Insecticides</option>
+              <option>Fungicides</option>
+              <option>Herbicides</option>
+              <option>Fertilizers</option>
+              <option>Seeds</option>
+              <option>Hybrid Seeds</option>
+              <option>Micronutrients</option>
+              <option>Other Products</option>
+            </select>
+          </div>
+          <div class="field"><label>Pack Size</label><input id="pPack" placeholder="100 gm / 1 Ltr / 20 kg"></div>
+          <div class="field"><label>Price</label><input id="pPrice" type="number" placeholder="375"></div>
+          <div class="field"><label>Stock</label><input id="pStock" type="number" placeholder="50"></div>
+          <div class="field"><label>Image URL / Path</label><input id="pImage" placeholder="assets/product-images/acelam.jpg"></div>
+          <div class="field"><label>Brand</label><input id="pBrand" placeholder="Excel Crop Care"></div>
+          <div class="field"><label>Badge</label>
+            <select id="pBadge">
+              <option value="">None</option>
+              <option>Hot</option>
+              <option>Sale</option>
+              <option>New</option>
+              <option>Best</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Usage / Description</label><textarea id="pDesc" placeholder="Short product guidance..."></textarea></div>
+        <button class="btn primary" onclick="saveProduct()">Save Product</button>
+      </div>
+
+      <div class="card">
+        <h3>Product List <span class="sub">Edit product name, price, stock, pack, category and image.</span></h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Photo</th><th>Name</th><th>Category</th><th>Pack</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead>
+            <tbody id="productsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-orders" class="tab">
+      <div class="card">
+        <h3>Orders <button class="btn ghost" onclick="addDemoOrder()">Add Demo Order</button></h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Order ID</th><th>Customer</th><th>Phone</th><th>City</th><th>Total</th><th>Payment</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="ordersBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-deals" class="tab">
+      <div class="card">
+        <h3>Hot Deals</h3>
+        <div class="form-grid">
+          <div class="field"><label>Deal Name</label><input id="dealName" placeholder="Today Hot Deal"></div>
+          <div class="field"><label>Deal Product ID</label><input id="dealProductId" placeholder="Product ID"></div>
+          <div class="field"><label>Manual Sale Price</label><input id="dealPrice" type="number" placeholder="Sale price"></div>
+          <div class="field"><label>Deal Style</label>
+            <select id="dealStyle">
+              <option value="gold">Gold</option>
+              <option value="green">Green</option>
+              <option value="red">Red</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn primary" onclick="saveDeal()">Save Deal</button>
+      </div>
+      <div class="card">
+        <h3>Deals List</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Product ID</th><th>Sale Price</th><th>Style</th><th>Action</th></tr></thead>
+            <tbody id="dealsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-bank" class="tab">
+      <div class="card">
+        <h3>Bank Transfer Details <span class="sub">These details will appear on checkout when customer selects Bank Transfer.</span></h3>
+        <div class="form-grid">
+          <div class="field"><label>Bank Name</label><input id="bankName" placeholder="Example: Meezan Bank"></div>
+          <div class="field"><label>Account Title</label><input id="accountTitle" placeholder="Excel Crop Care"></div>
+          <div class="field"><label>Account Number</label><input id="accountNumber" placeholder="Account number"></div>
+          <div class="field"><label>IBAN</label><input id="iban" placeholder="PK00 XXXX 0000 0000 0000 0000"></div>
+          <div class="field"><label>Branch / City</label><input id="branchCity" placeholder="Multan"></div>
+          <div class="field"><label>Payment Instructions</label><input id="bankNote" placeholder="Send payment screenshot on WhatsApp after transfer."></div>
+        </div>
+        <button class="btn primary" onclick="saveBankDetails()">Save Bank Details</button>
+      </div>
+      <div class="card">
+        <h3>Checkout Preview</h3>
+        <div class="bank-preview" id="bankPreview"></div>
+      </div>
+    </section>
+
+    <section id="tab-policies" class="tab">
+      <div class="card">
+        <h3>Policies</h3>
+        <div class="form-grid">
+          <div class="field"><label>Free Delivery Policy</label><textarea id="freeDeliveryPolicy">Free delivery only on full cotton order.</textarea></div>
+          <div class="field"><label>Return Policy</label><textarea id="returnPolicy">Return accepted for wrong or damaged product according to policy.</textarea></div>
+          <div class="field"><label>Terms & Conditions</label><textarea id="termsPolicy">Product use must follow label instructions and expert guidance.</textarea></div>
+          <div class="field"><label>FAQ Text</label><textarea id="faqText">For crop problem help, contact our WhatsApp support.</textarea></div>
+        </div>
+        <button class="btn primary" onclick="savePolicies()">Save Policies</button>
+      </div>
+    </section>
+
+    <section id="tab-settings" class="tab">
+      <div class="card">
+        <h3>Company Logo</h3>
+        <div class="logo-preview">
+          <img id="settingsLogoPreview" src="assets/ecc-custom/excel-crop-group-logo.png" alt="Excel Crop Group Logo" onerror="this.src='assets/ecc-custom/ecc-logo-watermark.png'">
+          <div>
+            <b>Real logo path:</b><br>
+            <span>public/assets/ecc-custom/excel-crop-group-logo.png</span>
+            <p class="sub">Put your uploaded logo image with this exact name and path.</p>
+          </div>
+        </div>
+        <div class="field">
+          <label>Logo Path</label>
+          <input id="logoPath" value="assets/ecc-custom/excel-crop-group-logo.png">
+        </div>
+        <button class="btn primary" onclick="saveLogoPath()">Save Logo Path</button>
+      </div>
+
+      <div class="card">
+        <h3>Admin Password</h3>
+        <div class="form-grid">
+          <div class="field"><label>New Username</label><input id="newAdminUser" placeholder="admin"></div>
+          <div class="field"><label>New Password</label><input id="newAdminPass" type="password" placeholder="New password"></div>
+        </div>
+        <button class="btn orange" onclick="changeAdminLogin()">Change Login</button>
+      </div>
+    </section>
+
+    <div class="footer-note">Excel Crop Care Admin Panel — Improving Agriculture, Improving Lives</div>
+  </main>
+</section>
+
+<script>
+const LS = {
+  auth: "eccAdminLoggedIn",
+  login: "eccAdminLogin",
+  products: "eccProducts",
+  orders: "eccOrders",
+  deals: "eccDeals",
+  bank: "eccBankDetails",
+  policies: "eccPolicies",
+  logo: "eccLogoPath"
+};
+
+const DEFAULT_LOGIN = { user:"admin", pass:"excel2026" };
+
+const seedProducts = [
+  {id:1,name:"ACELAM 26% WDG",formula:"Acetamiprid + Lambda Cyhalothrin",category:"Insecticides",pack:"100 gm",price:375,stock:50,image:"assets/product-images/acelam.jpg",brand:"Excel Crop Care",badge:"Hot",desc:"For sucking pests and insect control."},
+  {id:2,name:"MEGA FIT",formula:"Dinotefuran 20%",category:"Insecticides",pack:"100 gm",price:650,stock:35,image:"assets/product-images/mega-fit.jpg",brand:"Excel Crop Care",badge:"Best",desc:"Effective insecticide for crop protection."},
+  {id:3,name:"FULL CONTROL",formula:"Herbicide",category:"Herbicides",pack:"1 Ltr",price:1200,stock:20,image:"assets/product-images/full-control.jpg",brand:"Excel Crop Care",badge:"Sale",desc:"Weed control product."}
+];
+
+function getJSON(key, fallback){
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch(e){ return fallback; }
+}
+function setJSON(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+function toast(msg){ alert(msg); }
+
+function init(){
+  if(!localStorage.getItem(LS.login)) setJSON(LS.login, DEFAULT_LOGIN);
+  if(!localStorage.getItem(LS.products)) setJSON(LS.products, seedProducts);
+  if(!localStorage.getItem(LS.orders)) setJSON(LS.orders, []);
+  if(!localStorage.getItem(LS.deals)) setJSON(LS.deals, []);
+  if(!localStorage.getItem(LS.bank)) setJSON(LS.bank, {
+    bankName:"",
+    accountTitle:"Excel Crop Care",
+    accountNumber:"",
+    iban:"",
+    branchCity:"Multan",
+    bankNote:"Send payment screenshot on WhatsApp after transfer."
+  });
+  if(!localStorage.getItem(LS.policies)) setJSON(LS.policies, {});
+  if(!localStorage.getItem(LS.logo)) localStorage.setItem(LS.logo, "assets/ecc-custom/excel-crop-group-logo.png");
+
+  applyLogo();
+  if(localStorage.getItem(LS.auth)==="true") showAdmin();
+  renderAll();
+}
+
+function loginAdmin(){
+  const saved = getJSON(LS.login, DEFAULT_LOGIN);
+  const user = document.getElementById("loginUser").value.trim();
+  const pass = document.getElementById("loginPass").value.trim();
+  if(user === saved.user && pass === saved.pass){
+    localStorage.setItem(LS.auth,"true");
+    showAdmin();
+  } else {
+    document.getElementById("loginError").style.display = "block";
+  }
+}
+function logoutAdmin(){
+  localStorage.removeItem(LS.auth);
+  document.getElementById("adminScreen").classList.add("hidden");
+  document.getElementById("loginScreen").classList.remove("hidden");
+}
+function showAdmin(){
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("adminScreen").classList.remove("hidden");
+}
+
+function showTab(name, btn){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById("tab-"+name).classList.add("active");
+  document.querySelectorAll(".navbtn").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  const titles = {dashboard:"Admin Dashboard",products:"Products",orders:"Orders",deals:"Hot Deals",bank:"Bank Transfer",policies:"Policies",settings:"Settings"};
+  document.getElementById("topTitle").textContent = titles[name] || "Admin Dashboard";
+}
+
+function renderAll(){
+  renderStats();
+  renderProducts();
+  renderOrders();
+  renderDeals();
+  loadBankDetails();
+  loadPolicies();
+  applyLogo();
+}
+
+function renderStats(){
+  const products = getJSON(LS.products, []);
+  const orders = getJSON(LS.orders, []);
+  const deals = getJSON(LS.deals, []);
+  document.getElementById("statProducts").textContent = products.length ? products.length : "100+";
+  document.getElementById("statOrders").textContent = orders.length;
+  document.getElementById("statDeals").textContent = deals.length;
+  renderBankPreview();
+}
+
+function renderProducts(){
+  const products = getJSON(LS.products, []);
+  const body = document.getElementById("productsBody");
+  body.innerHTML = products.map(p=>`
+    <tr>
+      <td><img class="pthumb" src="${p.image || ""}" onerror="this.style.display='none'"></td>
+      <td><b>${escapeHTML(p.name)}</b><br><span style="color:#789;font-size:11px">${escapeHTML(p.formula||"")}</span></td>
+      <td>${escapeHTML(p.category||"")}</td>
+      <td>${escapeHTML(p.pack||"")}</td>
+      <td>Rs.${Number(p.price||0).toLocaleString()}</td>
+      <td>${p.stock ?? 0}</td>
+      <td><div class="row-actions">
+        <button class="smallbtn edit" onclick="editProduct(${p.id})">Edit</button>
+        <button class="smallbtn del" onclick="deleteProduct(${p.id})">Delete</button>
+      </div></td>
+    </tr>
+  `).join("");
+}
+function saveProduct(){
+  const products = getJSON(LS.products, []);
+  const editId = Number(document.getElementById("productEditId").value || 0);
+  const product = {
+    id: editId || Date.now(),
+    name: val("pName"),
+    formula: val("pFormula"),
+    category: val("pCategory"),
+    pack: val("pPack"),
+    price: Number(val("pPrice") || 0),
+    stock: Number(val("pStock") || 0),
+    image: val("pImage"),
+    brand: val("pBrand"),
+    badge: val("pBadge"),
+    desc: val("pDesc")
+  };
+  if(!product.name){ toast("Product name required."); return; }
+  const next = editId ? products.map(p=>p.id===editId?product:p) : [product, ...products];
+  setJSON(LS.products, next);
+  resetProductForm();
+  renderAll();
+  toast("Product saved.");
+}
+function editProduct(id){
+  const p = getJSON(LS.products, []).find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById("productEditId").value = p.id;
+  setVal("pName", p.name); setVal("pFormula", p.formula); setVal("pCategory", p.category);
+  setVal("pPack", p.pack); setVal("pPrice", p.price); setVal("pStock", p.stock);
+  setVal("pImage", p.image); setVal("pBrand", p.brand); setVal("pBadge", p.badge); setVal("pDesc", p.desc);
+  document.getElementById("productFormTitle").textContent = "Edit Product";
+  showTab("products", document.querySelectorAll(".navbtn")[1]);
+}
+function deleteProduct(id){
+  if(!confirm("Delete this product?")) return;
+  setJSON(LS.products, getJSON(LS.products, []).filter(p=>p.id!==id));
+  renderAll();
+}
+function resetProductForm(){
+  ["productEditId","pName","pFormula","pPack","pPrice","pStock","pImage","pBrand","pDesc"].forEach(id=>setVal(id,""));
+  setVal("pCategory","Insecticides"); setVal("pBadge","");
+  document.getElementById("productFormTitle").textContent = "Add Product";
+}
+
+function renderOrders(){
+  const orders = getJSON(LS.orders, []);
+  const body = document.getElementById("ordersBody");
+  if(!orders.length){
+    body.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#789;padding:18px">No orders yet.</td></tr>`;
+    return;
+  }
+  body.innerHTML = orders.map(o=>`
+    <tr>
+      <td>#${o.id}</td><td>${escapeHTML(o.customer)}</td><td>${escapeHTML(o.phone)}</td><td>${escapeHTML(o.city)}</td>
+      <td>Rs.${Number(o.total||0).toLocaleString()}</td><td>${escapeHTML(o.payment||"Bank Transfer")}</td>
+      <td><span class="status ${o.status||"new"}">${o.status||"new"}</span></td>
+      <td><div class="row-actions">
+        <button class="smallbtn view" onclick="updateOrder(${o.id},'done')">Done</button>
+        <button class="smallbtn del" onclick="updateOrder(${o.id},'cancel')">Cancel</button>
+      </div></td>
+    </tr>
+  `).join("");
+}
+function addDemoOrder(){
+  const orders = getJSON(LS.orders, []);
+  orders.unshift({id:Date.now(),customer:"Demo Customer",phone:"03000000000",city:"Multan",total:2500,payment:"Bank Transfer",status:"new"});
+  setJSON(LS.orders, orders);
+  renderAll();
+}
+function updateOrder(id,status){
+  setJSON(LS.orders, getJSON(LS.orders, []).map(o=>o.id===id?{...o,status}:o));
+  renderAll();
+}
+
+function saveDeal(){
+  const deals = getJSON(LS.deals, []);
+  const deal = {id:Date.now(),name:val("dealName"),productId:val("dealProductId"),salePrice:Number(val("dealPrice")||0),style:val("dealStyle")};
+  if(!deal.name || !deal.productId){ toast("Deal name and product ID required."); return; }
+  deals.unshift(deal);
+  setJSON(LS.deals,deals);
+  setVal("dealName",""); setVal("dealProductId",""); setVal("dealPrice",""); setVal("dealStyle","gold");
+  renderAll();
+}
+function renderDeals(){
+  const deals = getJSON(LS.deals, []);
+  document.getElementById("dealsBody").innerHTML = deals.length ? deals.map(d=>`
+    <tr><td>${escapeHTML(d.name)}</td><td>${escapeHTML(String(d.productId))}</td><td>Rs.${Number(d.salePrice||0).toLocaleString()}</td><td>${escapeHTML(d.style)}</td>
+    <td><button class="smallbtn del" onclick="deleteDeal(${d.id})">Delete</button></td></tr>
+  `).join("") : `<tr><td colspan="5" style="text-align:center;color:#789;padding:18px">No deals saved.</td></tr>`;
+}
+function deleteDeal(id){
+  setJSON(LS.deals, getJSON(LS.deals, []).filter(d=>d.id!==id));
+  renderAll();
+}
+
+function loadBankDetails(){
+  const b = getJSON(LS.bank, {});
+  ["bankName","accountTitle","accountNumber","iban","branchCity","bankNote"].forEach(id=>setVal(id,b[id]||""));
+  renderBankPreview();
+}
+function saveBankDetails(){
+  const bank = {
+    bankName: val("bankName"),
+    accountTitle: val("accountTitle"),
+    accountNumber: val("accountNumber"),
+    iban: val("iban"),
+    branchCity: val("branchCity"),
+    bankNote: val("bankNote")
+  };
+  setJSON(LS.bank, bank);
+  renderBankPreview();
+  toast("Bank details saved.");
+}
+function renderBankPreview(){
+  const b = getJSON(LS.bank, {});
+  const html = `
+    <strong>Bank Name:</strong> ${escapeHTML(b.bankName || "Not added")}<br>
+    <strong>Account Title:</strong> ${escapeHTML(b.accountTitle || "Excel Crop Care")}<br>
+    <strong>Account Number:</strong> ${escapeHTML(b.accountNumber || "Not added")}<br>
+    <strong>IBAN:</strong> ${escapeHTML(b.iban || "Not added")}<br>
+    <strong>Branch / City:</strong> ${escapeHTML(b.branchCity || "Multan")}<br>
+    <strong>Instructions:</strong> ${escapeHTML(b.bankNote || "Send payment screenshot on WhatsApp after transfer.")}
+  `;
+  const p1 = document.getElementById("bankPreview");
+  const p2 = document.getElementById("dashBankPreview");
+  if(p1) p1.innerHTML = html;
+  if(p2) p2.innerHTML = html;
+}
+
+function loadPolicies(){
+  const p = getJSON(LS.policies, {});
+  setVal("freeDeliveryPolicy", p.freeDeliveryPolicy || "Free delivery only on full cotton order.");
+  setVal("returnPolicy", p.returnPolicy || "Return accepted for wrong or damaged product according to policy.");
+  setVal("termsPolicy", p.termsPolicy || "Product use must follow label instructions and expert guidance.");
+  setVal("faqText", p.faqText || "For crop problem help, contact our WhatsApp support.");
+}
+function savePolicies(){
+  setJSON(LS.policies, {
+    freeDeliveryPolicy: val("freeDeliveryPolicy"),
+    returnPolicy: val("returnPolicy"),
+    termsPolicy: val("termsPolicy"),
+    faqText: val("faqText")
+  });
+  toast("Policies saved.");
+}
+
+function applyLogo(){
+  const logo = localStorage.getItem(LS.logo) || "assets/ecc-custom/excel-crop-group-logo.png";
+  ["loginLogo","sideLogo","settingsLogoPreview"].forEach(id=>{
+    const img = document.getElementById(id);
+    if(img) img.src = logo;
+  });
+  setVal("logoPath", logo);
+}
+function saveLogoPath(){
+  const logo = val("logoPath") || "assets/ecc-custom/excel-crop-group-logo.png";
+  localStorage.setItem(LS.logo, logo);
+  applyLogo();
+  toast("Logo path saved.");
+}
+function changeAdminLogin(){
+  const user = val("newAdminUser") || "admin";
+  const pass = val("newAdminPass");
+  if(!pass){ toast("Enter new password."); return; }
+  setJSON(LS.login, {user, pass});
+  setVal("newAdminUser",""); setVal("newAdminPass","");
+  toast("Admin login updated. Save it safely.");
+}
+function exportData(){
+  const data = {
+    products:getJSON(LS.products,[]),
+    orders:getJSON(LS.orders,[]),
+    deals:getJSON(LS.deals,[]),
+    bank:getJSON(LS.bank,{}),
+    policies:getJSON(LS.policies,{}),
+    logo:localStorage.getItem(LS.logo)
+  };
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "excel-crop-care-admin-data.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function openStore(){ window.open("./index.html","_blank"); }
+
+function val(id){ return (document.getElementById(id)?.value || "").trim(); }
+function setVal(id,v){ const el=document.getElementById(id); if(el) el.value = v ?? ""; }
+function escapeHTML(s){ return String(s ?? "").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
