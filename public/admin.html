@@ -4,14 +4,16 @@
 <style>
 :root{--g:#1b6e1b;--g2:#2d8a2d;--o:#e65100;--r:#c62828;--b:#e3eadf;--bg:#f4f7f2;--txt:#1d271d;--mut:#6a756a;--card:#fff;--shadow:0 12px 35px rgba(21,70,25,.10)}*{box-sizing:border-box}body{font-family:Poppins,sans-serif;margin:0;background:linear-gradient(135deg,#f4f7f2,#eef8ee);color:var(--txt);font-size:13px}button,input,select,textarea{font-family:inherit}.top{background:linear-gradient(135deg,#123512,#1b6e1b);color:#fff;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.18)}.brand{display:flex;align-items:center;gap:12px}.brand img{width:54px;height:54px;object-fit:contain;background:#fff;border-radius:14px;padding:5px}.brand h1{font-size:18px;margin:0;font-weight:900}.brand span{font-family:'Noto Nastaliq Urdu';display:block;font-size:13px;color:#ffe082;margin-top:2px}.wrap{max-width:1250px;margin:18px auto;padding:0 14px}.card{background:var(--card);border:1px solid var(--b);border-radius:18px;padding:18px;margin-bottom:15px;box-shadow:var(--shadow)}.login{max-width:430px;margin:42px auto;text-align:center}.login img{height:78px;object-fit:contain;margin-bottom:10px}.fg{margin-bottom:10px}.fg label{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#536153;margin-bottom:5px}.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;border:1.5px solid var(--b);border-radius:11px;outline:none;background:#fff;font-size:13px}.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(27,110,27,.09)}.btn{border:0;border-radius:11px;padding:9px 14px;font-weight:900;cursor:pointer;font-size:12px;transition:.18s}.green{background:var(--g2);color:#fff}.green:hover{background:var(--g)}.red{background:var(--r);color:#fff}.gray{background:#edf2ed;color:#333}.orange{background:var(--o);color:#fff}.dark{background:#172217;color:#fff}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.stat{background:linear-gradient(135deg,#f0fff0,#fff);border:1px solid #cbe8cb;border-radius:16px;padding:14px}.stat b{font-size:24px;color:var(--g)}.stat span{color:var(--mut);font-size:11px;font-weight:700}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tab{background:#fff;border:1px solid var(--b);padding:10px 14px;border-radius:12px;font-weight:900;cursor:pointer}.tab.on{background:var(--g);color:#fff}.hidden{display:none!important}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.actions{display:flex;gap:7px;flex-wrap:wrap}.small{font-size:11px;color:#777}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;border-radius:30px;font-size:13px;opacity:0;transition:.25s;z-index:99}.toast.on{opacity:1}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px;border-bottom:1px solid #edf2ed;text-align:left;vertical-align:middle}th{background:#f6faf6;color:#455;position:sticky;top:86px}.pimg{width:54px;height:54px;object-fit:contain;border-radius:10px;background:#f5f5f5;border:1px solid #eee}.preview{width:130px;height:115px;object-fit:contain;border:1px solid var(--b);border-radius:12px;background:#fafafa;margin-top:8px}.heroPreview{width:100%;max-height:170px;object-fit:cover;border:1px solid var(--b);border-radius:14px;background:#eee;margin-top:8px}.deal-builder{display:grid;grid-template-columns:360px 1fr;gap:16px}.product-picker{max-height:480px;overflow:auto;border:1px solid var(--b);border-radius:14px;background:#fbfdfb}.pick{display:grid;grid-template-columns:28px 52px 1fr 105px;gap:9px;align-items:center;padding:8px;border-bottom:1px solid #eef3ee}.pick input[type=checkbox]{width:18px;height:18px;accent-color:var(--o)}.mediaGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}.mediaCard{border:1px solid var(--b);border-radius:14px;overflow:hidden;background:#fff}.mediaCard img{width:100%;height:120px;object-fit:cover;background:#eee}.mediaCard div{padding:9px}.urlbox{font-size:10px;background:#f6f8f6;border:1px dashed #ccd5cc;border-radius:8px;padding:6px;word-break:break-all;cursor:pointer}.pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#fff3e0;color:#b44700;padding:4px 8px;font-size:10px;font-weight:900}.sectionTitle{display:flex;justify-content:space-between;align-items:center;gap:10px}.sectionTitle h2{margin:0 0 12px;font-size:18px}.urdu{font-family:'Noto Nastaliq Urdu'}@media(max-width:850px){.row,.row3,.deal-builder{grid-template-columns:1fr}.top{display:block}.brand{margin-bottom:10px}.pick{grid-template-columns:28px 45px 1fr}.pick .dealPrice{grid-column:3/5}.actions .btn{flex:1}}
 .admin-logo-preview-note{background:#f8fff9;border:1px dashed #9ed2aa;border-radius:12px;padding:8px;margin-top:6px;color:#0f5132;font-size:11px;font-weight:700}
-.payment-badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:900}
-.pay-pending{background:#fff4e5;color:#b75500;border:1px solid #ffd6a0}
-.pay-paid{background:#e7f7eb;color:#0f7a34;border:1px solid #bfe7c8}
-.pay-rejected{background:#ffecec;color:#b71919;border:1px solid #ffc7c7}
-.bank-box{background:#f8fff9;border:1px solid #cfe9d4;border-radius:14px;padding:14px;margin-top:14px}
-.bank-preview-admin{background:#fff;border:1px dashed #9ed2aa;border-radius:12px;padding:12px;line-height:1.8;font-size:12px;color:#263b2a}
-.payment-proof{max-width:170px;word-break:break-word;color:#555;font-size:11px}
-.logo-real-note{background:#eef9ff;border:1px solid #b7e3fb;color:#085c82;border-radius:12px;padding:8px 10px;font-size:11px;font-weight:800;margin-top:7px}
+/* ── Admin payment proof + out of stock patch ── */
+.stock-badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:900;border:1px solid #c8e6c9;background:#e8f5e9;color:#1b6e1b}
+.stock-badge.out{background:#ffebee;color:#c62828;border-color:#ffcdd2}
+.pay-status{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900}
+.pay-pending{background:#fff3e0;color:#e65100}.pay-paid{background:#e8f5e9;color:#1b6e1b}.pay-rejected{background:#ffebee;color:#c62828}
+.proof-thumb{width:62px;height:62px;object-fit:cover;border:1px solid var(--b);border-radius:10px;background:#fff;cursor:pointer}
+.proof-link{display:inline-block;margin-top:4px;font-size:10px;font-weight:900;color:#0d47a1}
+.tableWrap table th,.tableWrap table td{white-space:nowrap}.tableWrap table td:nth-child(4){white-space:normal;min-width:190px}
+.bank-settings-box{background:#f8fff9;border:1px solid #cfe9d4;border-radius:14px;padding:14px;margin-top:14px}
+
 </style></head><body>
 <div class="top"><div class="brand"><img id="topLogo" src="" alt="Logo"><div><h1 id="topName">Excel Crop Care Admin Backend</h1><span id="topUrdu">ایڈمن پینل</span></div></div><div class="actions"><a href="/" style="color:#fff;text-decoration:none;font-weight:800">View Website</a><button class="btn orange" onclick="logout()">Logout</button></div></div>
 <div class="wrap">
@@ -20,7 +22,7 @@
     <div class="grid" id="stats"></div>
     <div class="tabs"><button class="tab on" onclick="show('products',this)">Products</button><button class="tab" onclick="show('deals',this)">Deals</button><button class="tab" onclick="show('media',this)">Images</button><button class="tab" onclick="show('settings',this)">Website Settings</button><button class="tab" onclick="show('orders',this)">Orders</button><button class="tab" onclick="show('accounts',this)">Accounts</button></div>
 
-    <section id="products" class="card"><div class="sectionTitle"><h2>Product Database + Image Upload</h2><span class="pill">Backend saved</span></div><div class="row"><div><div class="fg"><label>Product ID for edit</label><input id="pid" placeholder="Leave empty for new product"></div><div class="fg"><label>Name</label><input id="name"></div><div class="fg"><label>Urdu Name</label><input id="urdu" dir="rtl"></div><div class="row"><div class="fg"><label>Category</label><select id="cat"><option>Insecticides</option><option>Fungicides</option><option>Herbicides</option><option>Fertilizers</option><option>Micronutrients</option><option>Seeds</option></select></div><div class="fg"><label>Pack Size</label><input id="wt"></div></div></div><div><div class="row"><div class="fg"><label>Price</label><input id="price" type="number"></div><div class="fg"><label>Stock</label><input id="stock" type="number" value="0"></div></div><div class="fg"><label>Formula / Composition</label><input id="comp"></div><div class="fg"><label>Hot?</label><select id="hot"><option value="0">No</option><option value="1">Yes</option></select></div><div class="fg"><label>Product Image</label><input id="image" type="file" accept="image/*" onchange="previewImg(this,'prev')"><img id="prev" class="preview hidden"></div></div></div><div class="actions"><button class="btn green" onclick="saveProduct()">Save Product</button><button class="btn gray" onclick="clearProductForm()">Clear</button><button class="btn orange" onclick="loadProducts()">Refresh</button></div>
+    <section id="products" class="card"><div class="sectionTitle"><h2>Product Database + Image Upload</h2><span class="pill">Backend saved</span></div><div class="row"><div><div class="fg"><label>Product ID for edit</label><input id="pid" placeholder="Leave empty for new product"></div><div class="fg"><label>Name</label><input id="name"></div><div class="fg"><label>Urdu Name</label><input id="urdu" dir="rtl"></div><div class="row"><div class="fg"><label>Category</label><select id="cat"><option>Insecticides</option><option>Fungicides</option><option>Herbicides</option><option>Fertilizers</option><option>Micronutrients</option><option>Seeds</option></select></div><div class="fg"><label>Pack Size</label><input id="wt"></div></div></div><div><div class="row"><div class="fg"><label>Price</label><input id="price" type="number"></div><div class="fg"><label>Stock</label><input id="stock" type="number" value="0"></div></div><div class="fg"><label>Formula / Composition</label><input id="comp"></div><div class="fg"><label>Hot?</label><select id="hot"><option value="0">No</option><option value="1">Yes</option></select></div><div class="fg"><label>Stock Status</label><select id="stockStatus"><option value="in">In Stock</option><option value="out">Out of Stock</option></select></div><div class="fg"><label>Product Image</label><input id="image" type="file" accept="image/*" onchange="previewImg(this,'prev')"><img id="prev" class="preview hidden"></div></div></div><div class="actions"><button class="btn green" onclick="saveProduct()">Save Product</button><button class="btn gray" onclick="clearProductForm()">Clear</button><button class="btn orange" onclick="loadProducts()">Refresh</button></div>
 <div class="bulk-rate-box">
   <div class="sectionTitle" style="margin-top:16px"><h2>Bulk Product Rate Update</h2><span class="pill">List input</span></div>
   <p class="small">Paste rates like <b>Product ID = price</b> or <b>Product Name = price</b>. Example: <code>1 = 450</code> or <code>ACELAM 26% WDG = 450</code>. One product per line.</p>
@@ -33,28 +35,21 @@
 
     <section id="media" class="card hidden"><div class="sectionTitle"><h2>🖼️ Image Library</h2><span class="pill">Logo • Background • Website images</span></div><div class="row"><div><div class="fg"><label>Image Label</label><input id="mediaLabel" placeholder="Hero background / Farmer image / Deal background"></div><div class="fg"><label>Upload any website image</label><input id="mediaFile" type="file" accept="image/*" onchange="previewImg(this,'mediaPrev')"><img id="mediaPrev" class="preview hidden"></div><button class="btn green" onclick="uploadMedia()">Upload Image</button></div><div><p class="small">Click any URL below to copy it. You can paste it in Settings or Deal Background field.</p></div></div><div class="mediaGrid" id="mediaGrid" style="margin-top:14px"></div></section>
 
-    <section id="settings" class="card hidden"><div class="sectionTitle"><h2>⚙️ Website Text + Company Information</h2><span class="pill">Changes public website</span></div><div class="row"><div><div class="fg"><label>Company Name</label><input id="set_company_name"></div><div class="fg"><label>Company Urdu Name</label><input id="set_company_urdu" dir="rtl"></div><div class="fg"><label>Urdu Slogan</label><input id="set_slogan_urdu" dir="rtl"></div><div class="fg"><label>Announcement Text</label><textarea id="set_announcement" rows="3"></textarea></div><div class="row"><div class="fg"><label>Phone</label><input id="set_phone"></div><div class="fg"><label>WhatsApp Number</label><input id="set_whatsapp"></div></div><div class="fg"><label>Address</label><textarea id="set_address" rows="2"></textarea></div><div class="fg"><label>Footer About Text</label><textarea id="set_footer_about" rows="3"></textarea></div></div><div><div class="fg"><label>Company Logo URL</label><input id="set_logo_url"><input type="file" id="up_logo_url" accept="image/*" onchange="uploadSettingImage('logo_url',this)"><img id="logoPreview" class="preview"><div class="admin-logo-preview-note">This logo appears in Admin, website header, home watermark and footer.</div><div class="logo-real-note">Recommended real logo path: /assets/ecc-custom/excel-crop-group-logo.png</div></div><div class="fg"><label>Hero Background URL</label><input id="set_hero_background_url"><input type="file" id="up_hero_background_url" accept="image/*" onchange="uploadSettingImage('hero_background_url',this)"><img id="heroPreview" class="heroPreview"></div><div class="fg"><label>Expert/Farmer Image URL</label><input id="set_expert_image_url"><input type="file" id="up_expert_image_url" accept="image/*" onchange="uploadSettingImage('expert_image_url',this)"><img id="expertPreview" class="heroPreview"></div></div></div><div class="card" style="margin-top:14px;background:#fbfffb"><div class="sectionTitle"><h2>Policies + Delivery Controls</h2><span class="pill">Footer and policy pages</span></div><div class="row"><div><div class="fg"><label>Return Policy Text</label><textarea id="set_return_policy" rows="4" placeholder="7-day return policy, wrong/damaged products, invoice required..."></textarea></div><div class="fg"><label>Terms & Conditions</label><textarea id="set_terms_conditions" rows="4" placeholder="Use policy, payment terms, delivery responsibility..."></textarea></div></div><div><div class="fg"><label>FAQ's</label><textarea id="set_faq_text" rows="4" placeholder="Write FAQ questions and answers here"></textarea></div><div class="fg"><label>Free Delivery Formula</label><input id="set_free_delivery_formula" placeholder="Free delivery on orders Rs.2000+"></div><div class="fg"><label>Customer Support Dropdown Text</label><textarea id="set_customer_support_text" rows="3" placeholder="Support hours, WhatsApp rules, return help..."></textarea></div></div></div></div>
-<div class="card bank-box">
-  <div class="sectionTitle">
-    <h2>🏦 Bank Transfer Settings</h2>
-    <span class="pill">Manual payment verification</span>
-  </div>
-  <p class="small">Customer will transfer payment to this bank account, then send screenshot/transaction ID on WhatsApp or checkout note. Admin will verify in bank app and click <b>Mark as Paid</b>.</p>
+    <section id="settings" class="card hidden"><div class="sectionTitle"><h2>⚙️ Website Text + Company Information</h2><span class="pill">Changes public website</span></div><div class="row"><div><div class="fg"><label>Company Name</label><input id="set_company_name"></div><div class="fg"><label>Company Urdu Name</label><input id="set_company_urdu" dir="rtl"></div><div class="fg"><label>Urdu Slogan</label><input id="set_slogan_urdu" dir="rtl"></div><div class="fg"><label>Announcement Text</label><textarea id="set_announcement" rows="3"></textarea></div><div class="row"><div class="fg"><label>Phone</label><input id="set_phone"></div><div class="fg"><label>WhatsApp Number</label><input id="set_whatsapp"></div></div><div class="fg"><label>Address</label><textarea id="set_address" rows="2"></textarea></div><div class="fg"><label>Footer About Text</label><textarea id="set_footer_about" rows="3"></textarea></div></div><div><div class="fg"><label>Company Logo URL</label><input id="set_logo_url"><input type="file" id="up_logo_url" accept="image/*" onchange="uploadSettingImage('logo_url',this)"><img id="logoPreview" class="preview"><div class="admin-logo-preview-note">This logo appears in Admin, website header, home watermark and footer.</div></div><div class="fg"><label>Hero Background URL</label><input id="set_hero_background_url"><input type="file" id="up_hero_background_url" accept="image/*" onchange="uploadSettingImage('hero_background_url',this)"><img id="heroPreview" class="heroPreview"></div><div class="fg"><label>Expert/Farmer Image URL</label><input id="set_expert_image_url"><input type="file" id="up_expert_image_url" accept="image/*" onchange="uploadSettingImage('expert_image_url',this)"><img id="expertPreview" class="heroPreview"></div></div></div><div class="card" style="margin-top:14px;background:#fbfffb"><div class="sectionTitle"><h2>Policies + Delivery Controls</h2><span class="pill">Footer and policy pages</span></div><div class="row"><div><div class="fg"><label>Return Policy Text</label><textarea id="set_return_policy" rows="4" placeholder="7-day return policy, wrong/damaged products, invoice required..."></textarea></div><div class="fg"><label>Terms & Conditions</label><textarea id="set_terms_conditions" rows="4" placeholder="Use policy, payment terms, delivery responsibility..."></textarea></div></div><div><div class="fg"><label>FAQ's</label><textarea id="set_faq_text" rows="4" placeholder="Write FAQ questions and answers here"></textarea></div><div class="fg"><label>Free Delivery Formula</label><input id="set_free_delivery_formula" placeholder="Free delivery on orders Rs.2000+"></div><div class="fg"><label>Customer Support Dropdown Text</label><textarea id="set_customer_support_text" rows="3" placeholder="Support hours, WhatsApp rules, return help..."></textarea></div></div></div></div><div class="bank-settings-box">
+  <div class="sectionTitle"><h2>Bank Transfer Settings</h2><span class="pill">Checkout payment proof</span></div>
   <div class="row">
     <div>
-      <div class="fg"><label>Bank Name</label><input id="set_bank_name" placeholder="Example: Meezan Bank / HBL / UBL"></div>
+      <div class="fg"><label>Bank Name</label><input id="set_bank_name" placeholder="Meezan / HBL / UBL"></div>
       <div class="fg"><label>Account Title</label><input id="set_account_title" placeholder="Excel Crop Care"></div>
       <div class="fg"><label>Account Number</label><input id="set_account_number" placeholder="Account number"></div>
     </div>
     <div>
       <div class="fg"><label>IBAN</label><input id="set_iban" placeholder="PK00 XXXX 0000 0000 0000 0000"></div>
       <div class="fg"><label>Branch / City</label><input id="set_branch_city" placeholder="Multan"></div>
-      <div class="fg"><label>Payment Instructions</label><input id="set_payment_instruction" placeholder="Send payment screenshot on WhatsApp after transfer."></div>
+      <div class="fg"><label>Payment Instructions</label><textarea id="set_bank_note" rows="2" placeholder="Upload screenshot after bank transfer."></textarea></div>
     </div>
   </div>
-  <div class="bank-preview-admin" id="adminBankPreview"></div>
-</div>
-<button class="btn green" onclick="saveSettings()">Save Website Settings</button></section>
+</div><button class="btn green" onclick="saveSettings()">Save Website Settings</button></section>
 
     <section id="orders" class="card hidden"><h2>Admin Order Panel</h2><button class="btn orange" onclick="loadOrders()">Refresh Orders</button><div id="orderTable" style="margin-top:14px;overflow:auto"></div></section>
     <section id="accounts" class="card hidden"><h2>Accounts Summary</h2><button class="btn green" onclick="loadSummary()">Recalculate</button><div id="summary" style="margin-top:14px;overflow:auto"></div></section>
@@ -65,26 +60,67 @@ let token=localStorage.getItem('ecc_admin_token')||'';let products=[];let orders
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2400)}
 async function api(url,opt={}){const headers=opt.body instanceof FormData?{}:{'Content-Type':'application/json'};if(token)headers.Authorization='Bearer '+token;const r=await fetch(url,{...opt,headers:{...headers,...(opt.headers||{})}});let data={};try{data=await r.json()}catch(e){}if(!r.ok)throw new Error(data.error||'Request failed');return data;}
 async function loadPublicSettings(){try{settings=await fetch('/api/site/settings').then(r=>r.json());applyAdminBrand()}catch(e){}}
-function applyAdminBrand(){
-  const defaultLogo='/assets/ecc-custom/excel-crop-group-logo.png';
-  const fallbackSvg='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"%3E%3Crect width="80" height="80" rx="18" fill="%231b6e1b"/%3E%3Ctext x="40" y="47" text-anchor="middle" font-family="Arial" font-size="20" font-weight="900" fill="white"%3EECC%3C/text%3E%3C/svg%3E';
-  const logo=settings.logo_url||defaultLogo;
-  topLogo.src=logo; loginLogo.src=logo;
-  topLogo.onerror=()=>{topLogo.onerror=null;topLogo.src=fallbackSvg};
-  loginLogo.onerror=()=>{loginLogo.onerror=null;loginLogo.src=fallbackSvg};
-  topName.textContent=(settings.company_name||'Excel Crop Care')+' Admin Backend';
-  topUrdu.textContent=settings.company_urdu||'ایڈمن پینل';
-}
+function applyAdminBrand(){const logo=settings.logo_url||'';if(logo){topLogo.src=logo;loginLogo.src=logo}else{topLogo.src='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"%3E%3Crect width="80" height="80" rx="18" fill="%231b6e1b"/%3E%3Ctext x="40" y="47" text-anchor="middle" font-family="Arial" font-size="20" font-weight="900" fill="white"%3EECC%3C/text%3E%3C/svg%3E';loginLogo.src=topLogo.src}topName.textContent=(settings.company_name||'Excel Crop Care')+' Admin Backend';topUrdu.textContent=settings.company_urdu||'ایڈمن پینل'}
 async function login(){try{const r=await api('/api/admin/login',{method:'POST',body:JSON.stringify({username:u.value,password:p.value})});token=r.token;localStorage.setItem('ecc_admin_token',token);boot();toast('Logged in')}catch(e){toast(e.message)}}
 function logout(){localStorage.removeItem('ecc_admin_token');token='';loginBox.classList.remove('hidden');app.classList.add('hidden')}
 async function boot(){try{await api('/api/admin/me');loginBox.classList.add('hidden');app.classList.remove('hidden');await Promise.all([loadSettings(),loadProducts(),loadOrders(),loadSummary(),loadDeals(),loadMedia()]);}catch(e){logout()}}
 function show(id,btn){document.querySelectorAll('section.card').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));btn.classList.add('on')}
 function previewImg(inp,id){const el=document.getElementById(id);if(inp.files&&inp.files[0]){el.src=URL.createObjectURL(inp.files[0]);el.classList.remove('hidden')}}
 function updateStats(){stats.innerHTML=`<div class="stat"><span>Products</span><br><b>${products.length}</b></div><div class="stat"><span>Deals</span><br><b>${deals.length}</b></div><div class="stat"><span>Orders</span><br><b>${orders.length}</b></div><div class="stat"><span>Backend</span><br><b>ON</b></div>`}
-function clearProductForm(){['pid','name','urdu','wt','price','stock','comp'].forEach(id=>document.getElementById(id).value='');image.value='';prev.classList.add('hidden')}
-async function loadProducts(){products=await api('/api/admin/products');renderProductPicker();productTable.innerHTML='<table><thead><tr><th>ID</th><th>Photo</th><th>Name</th><th>Category</th><th>Pack</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead><tbody>'+products.map(p=>`<tr><td>${p.id}</td><td><img class="pimg" src="${p.img||''}"></td><td><b>${p.name}</b><br><span class="small">${p.comp||''}</span></td><td>${p.cat}</td><td>${p.wt||''}</td><td>Rs.${Number(p.price||0).toLocaleString()}</td><td>${p.stock||0}</td><td class="actions"><button class="btn gray" onclick="editProduct(${p.id})">Edit</button><button class="btn red" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`).join('')+'</tbody></table>';updateStats()}
-function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;pid.value=p.id;name.value=p.name;urdu.value=p.urdu||'';cat.value=p.cat;wt.value=p.wt||'';price.value=p.price||0;stock.value=p.stock||0;comp.value=p.comp||'';hot.value=p.hot?'1':'0';if(p.img){prev.src=p.img;prev.classList.remove('hidden')}show('products',document.querySelectorAll('.tab')[0]);scrollTo({top:120,behavior:'smooth'})}
-async function saveProduct(){const fd=new FormData();['name','urdu','cat','wt','price','stock','comp','hot'].forEach(id=>fd.append(id,document.getElementById(id).value));if(image.files[0])fd.append('image',image.files[0]);try{if(pid.value)await api('/api/admin/products/'+pid.value,{method:'PUT',body:fd});else await api('/api/admin/products',{method:'POST',body:fd});toast('Product saved');clearProductForm();loadProducts()}catch(e){toast(e.message)}}
+
+function isOutOfStockProduct(p){
+  const v=String(p.stock_status||p.stockStatus||p.stock_status_text||"").toLowerCase();
+  return v==="out" || v==="out of stock" || p.outOfStock===true || p.available===false || String(p.stock).toLowerCase()==="out of stock";
+}
+function stockStatusLabel(p){
+  return isOutOfStockProduct(p)?'<span class="stock-badge out">Out of Stock</span>':'<span class="stock-badge">In Stock</span>';
+}
+function proofHTML(o){
+  const proof=o.paymentProof||o.payment_proof||o.proof||{};
+  const data=proof.data||proof.url||o.paymentProofUrl||o.payment_proof_url||"";
+  const txn=o.transactionId||o.transaction_id||o.payment_ref||"";
+  if(data) return `<img class="proof-thumb" src="${data}" onclick="viewProof('${encodeURIComponent(data)}')"><br><a class="proof-link" href="${data}" target="_blank">Open Proof</a>`;
+  if(txn) return `<small><b>Txn:</b> ${txn}</small>`;
+  return '<small style="color:#777">No proof</small>';
+}
+function paymentStatusClass(s){
+  s=String(s||"Pending").toLowerCase();
+  if(s==="paid")return"pay-paid";
+  if(s==="rejected")return"pay-rejected";
+  return"pay-pending";
+}
+function viewProof(encoded){
+  const src=decodeURIComponent(encoded);
+  const w=window.open("","_blank","width=850,height=720");
+  if(!w){toast("Allow popup to view proof");return;}
+  w.document.open();
+  w.document.write(`<title>Payment Proof</title><body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh"><img src="${src}" style="max-width:96vw;max-height:96vh;object-fit:contain"></body>`);
+  w.document.close();
+}
+function getLocalOrders(){
+  let out=[];
+  for(const k of ["ecc5o","ecc_orders","eccOrders"]){
+    try{const arr=JSON.parse(localStorage.getItem(k)||"[]"); if(Array.isArray(arr)) out=out.concat(arr);}catch(e){}
+  }
+  const seen=new Set();
+  return out.filter(o=>{const id=String(o.id||o.order_id||JSON.stringify(o).slice(0,40)); if(seen.has(id))return false; seen.add(id); return true;});
+}
+function saveLocalOrderPatch(id,patch){
+  for(const k of ["ecc5o","ecc_orders","eccOrders"]){
+    try{
+      const arr=JSON.parse(localStorage.getItem(k)||"[]");
+      if(Array.isArray(arr)){
+        let changed=false;
+        arr.forEach(o=>{if(String(o.id||o.order_id)===String(id)){Object.assign(o,patch);changed=true;}});
+        if(changed)localStorage.setItem(k,JSON.stringify(arr));
+      }
+    }catch(e){}
+  }
+}
+function clearProductForm(){['pid','name','urdu','wt','price','stock','comp'].forEach(id=>document.getElementById(id).value='');if(document.getElementById('stockStatus'))stockStatus.value='in';image.value='';prev.classList.add('hidden')}
+async function loadProducts(){products=await api('/api/admin/products');renderProductPicker();productTable.innerHTML='<div class="tableWrap"><table><thead><tr><th>ID</th><th>Photo</th><th>Name</th><th>Category</th><th>Pack</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead><tbody>'+products.map(p=>`<tr><td>${p.id}</td><td><img class="pimg" src="${p.img||''}"></td><td><b>${p.name}</b><br><span class="small">${p.comp||''}</span></td><td>${p.cat}</td><td>${p.wt||''}</td><td>Rs.${Number(p.price||0).toLocaleString()}</td><td>${p.stock||0}</td><td>${stockStatusLabel(p)}</td><td class="actions"><button class="btn gray" onclick="editProduct(${p.id})">Edit</button><button class="btn red" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`).join('')+'</tbody></table></div>';updateStats()}
+function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;pid.value=p.id;name.value=p.name;urdu.value=p.urdu||'';cat.value=p.cat;wt.value=p.wt||'';price.value=p.price||0;stock.value=p.stock||0;comp.value=p.comp||'';hot.value=p.hot?'1':'0';if(document.getElementById('stockStatus'))stockStatus.value=isOutOfStockProduct(p)?'out':'in';if(p.img){prev.src=p.img;prev.classList.remove('hidden')}show('products',document.querySelectorAll('.tab')[0]);scrollTo({top:120,behavior:'smooth'})}
+async function saveProduct(){const fd=new FormData();['name','urdu','cat','wt','price','stock','comp','hot'].forEach(id=>fd.append(id,document.getElementById(id).value));const st=document.getElementById('stockStatus')?.value||'in';fd.append('stock_status',st);fd.append('stockStatus',st);fd.append('outOfStock',st==='out'?'1':'0');fd.append('available',st==='out'?'0':'1');if(image.files[0])fd.append('image',image.files[0]);try{if(pid.value)await api('/api/admin/products/'+pid.value,{method:'PUT',body:fd});else await api('/api/admin/products',{method:'POST',body:fd});toast('Product saved');clearProductForm();loadProducts()}catch(e){toast(e.message)}}
 async function deleteProduct(id){if(!confirm('Delete product?'))return;await api('/api/admin/products/'+id,{method:'DELETE'});toast('Deleted');loadProducts()}
 function renderProductPicker(selected={}){if(!dealProductPicker)return;dealProductPicker.innerHTML=products.map(p=>{const s=selected[p.id]||'';return `<div class="pick"><input type="checkbox" class="dealCheck" data-id="${p.id}" ${s?'checked':''}><img class="pimg" src="${p.img||''}"><div><b>${p.name}</b><br><span class="small">Rs.${Number(p.price||0).toLocaleString()} • ${p.wt||''}</span></div><input class="dealPrice" data-id="${p.id}" type="number" placeholder="Deal price" value="${s}"></div>`}).join('')}
 function clearDealForm(){dealId.value='';dealTitle.value='';dealDesc.value='';dealStyle.value='dark';dealActive.value='1';dealEnd.value='';dealBg.value='';renderProductPicker()}
@@ -96,11 +132,26 @@ async function deleteDeal(id){if(!confirm('Delete deal?'))return;await api('/api
 async function loadMedia(){media=await api('/api/admin/media');mediaGrid.innerHTML=media.map(m=>`<div class="mediaCard"><img src="${m.url}"><div><b>${m.label||'Image'}</b><div class="urlbox" onclick="copyText('${m.url}')">${m.url}</div></div></div>`).join('')||'<p class="small">No uploaded images yet.</p>'}
 async function uploadMedia(){if(!mediaFile.files[0]){toast('Choose image first');return}const fd=new FormData();fd.append('image',mediaFile.files[0]);fd.append('label',mediaLabel.value||'Website image');try{const r=await api('/api/admin/media',{method:'POST',body:fd});toast('Image uploaded: '+r.media.url);mediaLabel.value='';mediaFile.value='';mediaPrev.classList.add('hidden');loadMedia()}catch(e){toast(e.message)}}
 function copyText(t){navigator.clipboard?.writeText(t);toast('Image URL copied')}
-async function loadSettings(){settings=await api('/api/admin/settings');applyAdminBrand();['company_name','company_urdu','slogan_urdu','announcement','phone','whatsapp','address','footer_about','logo_url','hero_background_url','expert_image_url'].forEach(k=>{const el=document.getElementById('set_'+k);if(el)el.value=settings[k]||''});logoPreview.src=settings.logo_url||'';heroPreview.src=settings.hero_background_url||'';expertPreview.src=settings.expert_image_url||''}
-async function saveSettings(){const keys=['company_name','company_urdu','slogan_urdu','announcement','phone','whatsapp','address','footer_about','logo_url','hero_background_url','expert_image_url'];const payload={};keys.forEach(k=>payload[k]=document.getElementById('set_'+k).value);try{const r=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(payload)});settings=r.settings;applyAdminBrand();toast('Website settings saved')}catch(e){toast(e.message)}}
+async function loadSettings(){settings=await api('/api/admin/settings');applyAdminBrand();['company_name','company_urdu','slogan_urdu','announcement','phone','whatsapp','address','footer_about','logo_url','hero_background_url','expert_image_url','return_policy','terms_conditions','faq_text','free_delivery_formula','customer_support_text','bank_name','account_title','account_number','iban','branch_city','bank_note'].forEach(k=>{const el=document.getElementById('set_'+k);if(el)el.value=settings[k]||''});logoPreview.src=settings.logo_url||'';heroPreview.src=settings.hero_background_url||'';expertPreview.src=settings.expert_image_url||''}
+async function saveSettings(){const keys=['company_name','company_urdu','slogan_urdu','announcement','phone','whatsapp','address','footer_about','logo_url','hero_background_url','expert_image_url','return_policy','terms_conditions','faq_text','free_delivery_formula','customer_support_text','bank_name','account_title','account_number','iban','branch_city','bank_note'];const payload={};keys.forEach(k=>payload[k]=document.getElementById('set_'+k).value);try{const r=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(payload)});settings=r.settings;applyAdminBrand();toast('Website settings saved')}catch(e){toast(e.message)}}
 async function uploadSettingImage(key,inp){if(!inp.files[0])return;const fd=new FormData();fd.append('image',inp.files[0]);try{const r=await api('/api/admin/settings/upload/'+key,{method:'POST',body:fd});settings=r.settings;document.getElementById('set_'+key).value=r.url;if(key==='logo_url')logoPreview.src=r.url;if(key==='hero_background_url')heroPreview.src=r.url;if(key==='expert_image_url')expertPreview.src=r.url;applyAdminBrand();loadMedia();toast('Image saved for '+key)}catch(e){toast(e.message)}}
-async function loadOrders(){orders=await api('/api/admin/orders');orderTable.innerHTML='<table><thead><tr><th>ID</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Update</th></tr></thead><tbody>'+orders.map(o=>`<tr><td>${o.id}</td><td>${o.date}</td><td><b>${o.name}</b><br>${o.phone}<br><span class="small">${o.city} - ${o.address}</span></td><td>${(o.items||[]).map(i=>`${i.name} x ${i.qty}`).join('<br>')}</td><td>Rs.${Number(o.total||0).toLocaleString()}</td><td>${o.status}</td><td><select onchange="setStatus('${o.id}',this.value)"><option ${o.status==='New'?'selected':''}>New</option><option ${o.status==='Pending'?'selected':''}>Pending</option><option ${o.status==='Completed'?'selected':''}>Completed</option><option ${o.status==='Cancelled'?'selected':''}>Cancelled</option></select></td></tr>`).join('')+'</tbody></table>';updateStats()}
-async function setStatus(id,status){await api('/api/admin/orders/'+id+'/status',{method:'PUT',body:JSON.stringify({status})});toast('Order updated');loadOrders();loadSummary()}
+async function loadOrders(){
+  let apiOrders=[];
+  try{apiOrders=await api('/api/admin/orders')}catch(e){apiOrders=[]}
+  const localOrders=getLocalOrders();
+  const seen=new Set();
+  orders=[...localOrders,...apiOrders].filter(o=>{const id=String(o.id||o.order_id||JSON.stringify(o).slice(0,40));if(seen.has(id))return false;seen.add(id);return true;});
+  orderTable.innerHTML='<div class="tableWrap"><table><thead><tr><th>ID</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Proof</th><th>Status</th><th>Action</th></tr></thead><tbody>'+orders.map(o=>{
+    const oid=o.id||o.order_id;
+    const pay=o.paymentStatus||o.payment_status||'Pending';
+    const items=(o.items||[]).map(i=>`${i.name||i.n||'Product'} x ${i.qty||1}`).join('<br>');
+    return `<tr><td>${oid}</td><td>${o.date||''}</td><td><b>${o.name||o.customer||''}</b><br>${o.phone||''}<br><span class="small">${o.city||''} - ${o.address||''}</span></td><td>${items}</td><td>Rs.${Number(o.total||0).toLocaleString()}</td><td><b>${o.paymentMethod||o.payment_method||'Bank Transfer'}</b><br><span class="pay-status ${paymentStatusClass(pay)}">${pay}</span>${(o.transactionId||o.transaction_id)?`<br><small>Txn: ${o.transactionId||o.transaction_id}</small>`:''}</td><td>${proofHTML(o)}</td><td>${o.status||'New'}</td><td><div class="actions"><button class="btn green" onclick="markPaid('${oid}')">Mark Paid</button><button class="btn orange" onclick="setStatus('${oid}','Completed')">Complete</button><button class="btn red" onclick="rejectPayment('${oid}')">Reject</button></div></td></tr>`;
+  }).join('')+'</tbody></table></div>';
+  updateStats()
+}
+async function setStatus(id,status){try{await api('/api/admin/orders/'+id+'/status',{method:'PUT',body:JSON.stringify({status})})}catch(e){}saveLocalOrderPatch(id,{status});toast('Order updated');loadOrders();loadSummary()}
+async function markPaid(id){try{await api('/api/admin/orders/'+id+'/status',{method:'PUT',body:JSON.stringify({status:'Pending',paymentStatus:'Paid',payment_status:'Paid'})})}catch(e){}saveLocalOrderPatch(id,{paymentStatus:'Paid',payment_status:'Paid',status:'Pending'});toast('Payment marked as Paid');loadOrders();loadSummary()}
+async function rejectPayment(id){try{await api('/api/admin/orders/'+id+'/status',{method:'PUT',body:JSON.stringify({status:'Cancelled',paymentStatus:'Rejected',payment_status:'Rejected'})})}catch(e){}saveLocalOrderPatch(id,{paymentStatus:'Rejected',payment_status:'Rejected',status:'Cancelled'});toast('Payment rejected');loadOrders();loadSummary()}
 async function loadSummary(){const s=await api('/api/admin/accounts/summary');summary.innerHTML=`<div class="grid"><div class="stat"><span>Total Orders</span><br><b>${s.orders}</b></div><div class="stat"><span>Net Sales</span><br><b>Rs.${Number(s.net).toLocaleString()}</b></div><div class="stat"><span>Completed</span><br><b>Rs.${Number(s.completed).toLocaleString()}</b></div><div class="stat"><span>Pending</span><br><b>Rs.${Number(s.pending).toLocaleString()}</b></div><div class="stat"><span>Units Sold</span><br><b>${s.units}</b></div></div><h3>Product-wise Revenue</h3><table><thead><tr><th>Product</th><th>Qty</th><th>Revenue</th></tr></thead><tbody>${s.byProduct.map(p=>`<tr><td>${p.name}</td><td>${p.qty}</td><td>Rs.${Number(p.revenue).toLocaleString()}</td></tr>`).join('')}</tbody></table>`;updateStats()}
 loadPublicSettings();if(token)boot();
 </script>
@@ -134,45 +185,13 @@ th{position:static!important;top:auto!important}.tableWrap{max-height:520px;over
 </style>
 <script id="ecc-admin-v6-js">
 (function(){
-  const extraSettingKeys=['company_name','company_urdu','slogan_urdu','announcement','phone','whatsapp','address','footer_about','logo_url','hero_background_url','expert_image_url','return_policy','terms_conditions','faq_text','free_delivery_formula','customer_support_text','bank_name','account_title','account_number','iban','branch_city','payment_instruction'];
-  window.loadProducts=async function(){products=await api('/api/admin/products');renderProductPicker();productTable.innerHTML='<div class="admin-help-note">Product header stays above the product list now. Scroll inside this box only.</div><div class="tableWrap"><table><thead><tr><th>ID</th><th>Photo</th><th>Name</th><th>Category</th><th>Pack</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead><tbody>'+products.map(p=>`<tr><td>${p.id}</td><td><img class="pimg" src="${p.img||''}"></td><td><b>${p.name}</b><br><span class="small">${p.comp||''}</span></td><td>${p.cat}</td><td>${p.wt||''}</td><td>Rs.${Number(p.price||0).toLocaleString()}</td><td>${p.stock||0}</td><td class="actions"><button class="btn gray" onclick="editProduct(${p.id})">Edit</button><button class="btn red" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`).join('')+'</tbody></table></div>';updateStats();updateDealPreview();}
+  const extraSettingKeys=['company_name','company_urdu','slogan_urdu','announcement','phone','whatsapp','address','footer_about','logo_url','hero_background_url','expert_image_url','return_policy','terms_conditions','faq_text','free_delivery_formula','customer_support_text','bank_name','account_title','account_number','iban','branch_city','bank_note'];
+  window.loadProducts=async function(){products=await api('/api/admin/products');renderProductPicker();productTable.innerHTML='<div class="admin-help-note">Product header stays above the product list now. Scroll inside this box only.</div><div class="tableWrap"><table><thead><tr><th>ID</th><th>Photo</th><th>Name</th><th>Category</th><th>Pack</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead><tbody>'+products.map(p=>`<tr><td>${p.id}</td><td><img class="pimg" src="${p.img||''}"></td><td><b>${p.name}</b><br><span class="small">${p.comp||''}</span></td><td>${p.cat}</td><td>${p.wt||''}</td><td>Rs.${Number(p.price||0).toLocaleString()}</td><td>${p.stock||0}</td><td>${stockStatusLabel(p)}</td><td class="actions"><button class="btn gray" onclick="editProduct(${p.id})">Edit</button><button class="btn red" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`).join('')+'</tbody></table></div>';updateStats();updateDealPreview();}
   window.loadOrders=async function(){
-    orders=await api('/api/admin/orders');
-    orderTable.innerHTML='<div class="admin-help-note">Bank transfer workflow: order is Payment Pending first. Customer sends screenshot/transaction ID. Admin verifies in bank app and clicks Mark as Paid.</div><div class="tableWrap"><table><thead><tr><th>ID</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Payment Status</th><th>Proof / TXN</th><th>Order Status</th><th>Admin Action</th></tr></thead><tbody>'+orders.map(o=>{
-      const paymentMethod=o.payment_method||o.paymentMethod||o.payment||'Bank Transfer';
-      const proof=o.transaction_id||o.transactionId||o.txn||o.payment_note||o.paymentNote||o.proof||'Waiting for customer proof';
-      const orderStatus=o.status||'New';
-      const payStatus=o.payment_status||o.paymentStatus||(String(orderStatus).toLowerCase().includes('paid')||String(orderStatus).toLowerCase().includes('completed')?'Paid':'Pending');
-      const payClass=String(payStatus).toLowerCase().includes('paid')?'pay-paid':(String(payStatus).toLowerCase().includes('reject')?'pay-rejected':'pay-pending');
-      return `<tr>
-        <td>${o.id}</td>
-        <td>${o.date||''}</td>
-        <td><b>${o.name||''}</b><br>${o.phone||''}<br><span class="small">${o.city||''} - ${o.address||''}</span></td>
-        <td>${(o.items||[]).map(i=>`${i.name} x ${i.qty}`).join('<br>')}</td>
-        <td>Rs.${Number(o.total||0).toLocaleString()}</td>
-        <td>${paymentMethod}</td>
-        <td><span class="payment-badge ${payClass}">${payStatus}</span></td>
-        <td class="payment-proof">${proof}</td>
-        <td>${orderStatus}</td>
-        <td>
-          <div class="actions">
-            <button class="btn green" onclick="markOrderPaid('${o.id}')">Mark as Paid</button>
-            <button class="btn orange" onclick="setStatus('${o.id}','Pending')">Pending</button>
-            <button class="btn red" onclick="markPaymentRejected('${o.id}')">Reject</button>
-            <select onchange="setStatus('${o.id}',this.value)">
-              <option ${orderStatus==='New'?'selected':''}>New</option>
-              <option ${orderStatus==='Pending'?'selected':''}>Pending</option>
-              <option ${orderStatus==='Processing'?'selected':''}>Processing</option>
-              <option ${orderStatus==='Paid'?'selected':''}>Paid</option>
-              <option ${orderStatus==='Completed'?'selected':''}>Completed</option>
-              <option ${orderStatus==='Cancelled'?'selected':''}>Cancelled</option>
-            </select>
-          </div>
-        </td>
-      </tr>`;
-    }).join('')+'</tbody></table></div>';
-    updateStats();
-  }
+  let apiOrders=[];try{apiOrders=await api('/api/admin/orders')}catch(e){apiOrders=[]}
+  const localOrders=getLocalOrders();const seen=new Set();
+  orders=[...localOrders,...apiOrders].filter(o=>{const id=String(o.id||o.order_id||JSON.stringify(o).slice(0,40));if(seen.has(id))return false;seen.add(id);return true;});
+  orderTable.innerHTML='<div class="admin-help-note">Payment proof appears here. Verify bank app, then click Mark Paid.</div><div class="tableWrap"><table><thead><tr><th>ID</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Proof</th><th>Status</th><th>Action</th></tr></thead><tbody>'+orders.map(o=>{const oid=o.id||o.order_id;const pay=o.paymentStatus||o.payment_status||'Pending';const items=(o.items||[]).map(i=>`${i.name||i.n||'Product'} x ${i.qty||1}`).join('<br>');return `<tr><td>${oid}</td><td>${o.date||''}</td><td><b>${o.name||o.customer||''}</b><br>${o.phone||''}<br><span class="small">${o.city||''} - ${o.address||''}</span></td><td>${items}</td><td>Rs.${Number(o.total||0).toLocaleString()}</td><td><b>${o.paymentMethod||o.payment_method||'Bank Transfer'}</b><br><span class="pay-status ${paymentStatusClass(pay)}">${pay}</span>${(o.transactionId||o.transaction_id)?`<br><small>Txn: ${o.transactionId||o.transaction_id}</small>`:''}</td><td>${proofHTML(o)}</td><td>${o.status||'New'}</td><td><div class="actions"><button class="btn green" onclick="markPaid('${oid}')">Mark Paid</button><button class="btn orange" onclick="setStatus('${oid}','Completed')">Complete</button><button class="btn red" onclick="rejectPayment('${oid}')">Reject</button></div></td></tr>`}).join('')+'</tbody></table></div>';updateStats();}
   function firstSelectedDealProduct(){const checked=document.querySelector('.dealCheck:checked'); if(!checked) return products[0]||{}; return products.find(p=>String(p.id)===String(checked.dataset.id))||products[0]||{};}
   window.updateDealPreview=function(){
     let box=document.getElementById('dealPreviewBox'); if(!box){const host=document.querySelector('#deals .deal-builder > div:first-child'); if(!host) return; box=document.createElement('div'); box.id='dealPreviewBox'; box.className='deal-live-preview'; host.appendChild(box);}
@@ -183,61 +202,9 @@ th{position:static!important;top:auto!important}.tableWrap{max-height:520px;over
   window.renderProductPicker=function(selected={}){oldRenderPicker(selected);document.querySelectorAll('.dealCheck,.dealPrice').forEach(el=>el.addEventListener('input',updateDealPreview));updateDealPreview();}
   window.loadMedia=async function(){media=await api('/api/admin/media');mediaGrid.innerHTML=media.map(m=>`<div class="mediaCard"><img src="${m.url}"><div><b>${m.label||'Image'}</b><div class="urlbox" onclick="copyText('${m.url}')">${m.url}</div><div class="media-actions"><button class="btn gray" onclick="setImageTarget('dealBg','${m.url}')">Use for Deal BG</button><button class="btn gray" onclick="setImageTarget('set_hero_background_url','${m.url}')">Use Home Hero</button><button class="btn gray" onclick="setImageTarget('set_logo_url','${m.url}')">Use Logo</button><button class="btn gray" onclick="setImageTarget('set_expert_image_url','${m.url}')">Use Expert</button></div></div></div>`).join('')||'<p class="small">No uploaded images yet.</p>';}
   window.setImageTarget=function(id,url){const el=document.getElementById(id); if(el){el.value=url; el.dispatchEvent(new Event('input')); toast('Image placed in '+id); if(id==='dealBg')updateDealPreview(); if(id==='set_logo_url')logoPreview.src=url; if(id==='set_hero_background_url')heroPreview.src=url; if(id==='set_expert_image_url')expertPreview.src=url;} else {navigator.clipboard?.writeText(url); toast('Image URL copied');}}
-  window.loadSettings=async function(){
-    settings=await api('/api/admin/settings');
-    if(!settings.logo_url) settings.logo_url='/assets/ecc-custom/excel-crop-group-logo.png';
-    if(!settings.account_title) settings.account_title='Excel Crop Care';
-    if(!settings.branch_city) settings.branch_city='Multan';
-    if(!settings.payment_instruction) settings.payment_instruction='Send payment screenshot or transaction ID on WhatsApp after bank transfer.';
-    applyAdminBrand();
-    extraSettingKeys.forEach(k=>{const el=document.getElementById('set_'+k);if(el)el.value=settings[k]||''});
-    logoPreview.src=settings.logo_url||'/assets/ecc-custom/excel-crop-group-logo.png';
-    heroPreview.src=settings.hero_background_url||'';
-    expertPreview.src=settings.expert_image_url||'';
-    renderBankSettingsPreview();
-  }
-  window.saveSettings=async function(){
-    const payload={};
-    extraSettingKeys.forEach(k=>{const el=document.getElementById('set_'+k); if(el) payload[k]=el.value;});
-    try{
-      const r=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(payload)});
-      settings=r.settings;
-      applyAdminBrand();
-      renderBankSettingsPreview();
-      toast('Website settings, policies and bank transfer details saved');
-    }catch(e){toast(e.message)}
-  }
-
-  window.renderBankSettingsPreview=function(){
-    const box=document.getElementById('adminBankPreview');
-    if(!box) return;
-    const get=(id,def='')=>document.getElementById(id)?.value||def;
-    box.innerHTML=`<b>Bank Name:</b> ${get('set_bank_name','Not added')}<br>
-      <b>Account Title:</b> ${get('set_account_title','Excel Crop Care')}<br>
-      <b>Account Number:</b> ${get('set_account_number','Not added')}<br>
-      <b>IBAN:</b> ${get('set_iban','Not added')}<br>
-      <b>Branch / City:</b> ${get('set_branch_city','Multan')}<br>
-      <b>Instruction:</b> ${get('set_payment_instruction','Send payment screenshot or transaction ID on WhatsApp after bank transfer.')}`;
-  }
-  window.markOrderPaid=async function(id){
-    if(!confirm('Have you verified this payment in your bank app? Mark this order as paid?')) return;
-    try{
-      await api('/api/admin/orders/'+id+'/status',{method:'PUT',body:JSON.stringify({status:'Paid',payment_status:'Paid',paymentStatus:'Paid'})});
-      toast('Order marked as paid');
-      loadOrders(); loadSummary();
-    }catch(e){toast(e.message)}
-  }
-  window.markPaymentRejected=async function(id){
-    if(!confirm('Reject this payment/order?')) return;
-    try{
-      await api('/api/admin/orders/'+id+'/status',{method:'PUT',body:JSON.stringify({status:'Payment Rejected',payment_status:'Rejected',paymentStatus:'Rejected'})});
-      toast('Payment rejected');
-      loadOrders(); loadSummary();
-    }catch(e){toast(e.message)}
-  }
-  document.addEventListener('input',e=>{ if(e.target && String(e.target.id||'').startsWith('set_')) renderBankSettingsPreview(); });
-
-  document.addEventListener('DOMContentLoaded',()=>{['dealTitle','dealDesc','dealBg','dealStyle','dealActive','dealEnd'].forEach(id=>{const el=document.getElementById(id); if(el) el.addEventListener('input',updateDealPreview);}); setTimeout(updateDealPreview,700); setTimeout(renderBankSettingsPreview,800);});
+  window.loadSettings=async function(){settings=await api('/api/admin/settings');applyAdminBrand();extraSettingKeys.forEach(k=>{const el=document.getElementById('set_'+k);if(el)el.value=settings[k]||''});logoPreview.src=settings.logo_url||'';heroPreview.src=settings.hero_background_url||'';expertPreview.src=settings.expert_image_url||'';}
+  window.saveSettings=async function(){const payload={};extraSettingKeys.forEach(k=>{const el=document.getElementById('set_'+k); if(el) payload[k]=el.value;});try{const r=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(payload)});settings=r.settings;applyAdminBrand();toast('Website settings and policies saved')}catch(e){toast(e.message)}}
+  document.addEventListener('DOMContentLoaded',()=>{['dealTitle','dealDesc','dealBg','dealStyle','dealActive','dealEnd'].forEach(id=>{const el=document.getElementById(id); if(el) el.addEventListener('input',updateDealPreview);}); setTimeout(updateDealPreview,700);});
 })();
 </script>
 
