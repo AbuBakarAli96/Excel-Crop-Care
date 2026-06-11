@@ -122,10 +122,15 @@ function initDb(){
 
   ensureColumn('products','stock_status',"TEXT DEFAULT 'in'");
   ensureColumn('products','out_of_stock',"INTEGER DEFAULT 0");
+  ensureColumn('products','p_carton',"TEXT DEFAULT ''");
+  ensureColumn('products','p_carton_qty',"INTEGER DEFAULT 1");
   ensureColumn('orders','payment_status',"TEXT DEFAULT 'Pending'");
   ensureColumn('orders','transaction_id',"TEXT DEFAULT ''");
   ensureColumn('orders','payment_note',"TEXT DEFAULT ''");
   ensureColumn('orders','payment_proof_url',"TEXT DEFAULT ''");
+  ensureColumn('orders','transport_name',"TEXT DEFAULT ''");
+  ensureColumn('orders','transport_city',"TEXT DEFAULT ''");
+  ensureColumn('orders','transport_note',"TEXT DEFAULT ''");
 
   const defaultSettings = {
     company_name:'Excel Crop Care',
@@ -181,12 +186,17 @@ function initDb(){
   }
 }
 initDb();
+seedPCarton();
+
+const DEFAULT_PCARTON = {"1": "50", "2": "20", "3": "10", "4": "40", "5": "20", "6": "12", "7": "3", "8": "40", "9": "50", "10": "2", "11": "20", "12": "12", "13": "40", "14": "12", "15": "30", "16": "40", "17": "12", "18": "50", "19": "20", "20": "12", "21": "60", "22": "4", "23": "70", "24": "50", "25": "12", "26": "40", "27": "12", "28": "40", "29": "20", "30": "50", "31": "20", "32": "12", "33": "3", "34": "20", "35": "20", "36": "20", "37": "12", "38": "BAG", "39": "BAG", "40": "BAG", "41": "BAG", "42": "BAG", "43": "BAG", "44": "BAG", "45": "15", "46": "8", "47": "BAG", "48": "12", "49": "30", "50": "12", "51": "12", "52": "CAN", "53": "CAN", "54": "CAN", "55": "DRUM", "56": "12", "57": "4", "58": "6", "59": "CAN", "60": "DRUM", "61": "CAN", "62": "CAN", "63": "40", "64": "12", "65": "12", "66": "12", "67": "20", "68": "30", "69": "12", "70": "20", "71": "80", "72": "15", "73": "20", "74": "40", "75": "10", "76": "100", "77": "20", "78": "12", "79": "12", "80": "20", "81": "20", "82": "12", "83": "40", "84": "100", "85": "20", "86": "20", "87": "12", "88": "12", "89": "20", "90": "40", "91": "8", "92": "20", "93": "40", "94": "30", "95": "30", "96": "40", "97": "15", "98": "BAG", "99": "8", "100": "20", "101": "BAG", "102": "BAG", "103": "BAG", "104": "BAG", "105": "BAG", "106": "BAG"};
+function cartonQtyFromValue(v){ const n=parseInt(v,10); return Number.isFinite(n)&&n>0?n:1; }
+function seedPCarton(){ const stmt=db.prepare('UPDATE products SET p_carton=?, p_carton_qty=? WHERE id=? AND (p_carton IS NULL OR p_carton=\'\')'); Object.entries(DEFAULT_PCARTON).forEach(([id,v])=>stmt.run(String(v), cartonQtyFromValue(v), Number(id))); }
 
 function productRowToClient(p){
   return {
     id:p.id, cat:p.cat, name:p.name, urdu:p.urdu, wt:p.wt, price:p.price, comp:p.comp,
     shape:p.shape, hot:!!p.hot, disc:p.disc, img:p.img, realProductPhoto:!!p.realProductPhoto,
-    realPhotoSource:p.realPhotoSource, stock:p.stock, stock_status:p.stock_status||'in', stockStatus:p.stock_status||'in', outOfStock:!!(p.out_of_stock)
+    realPhotoSource:p.realPhotoSource, stock:p.stock, stock_status:p.stock_status||'in', stockStatus:p.stock_status||'in', outOfStock:!!(p.out_of_stock), p_carton:p.p_carton||'', pCarton:p.p_carton||'', p_carton_qty:p.p_carton_qty||1, pCartonQty:p.p_carton_qty||1
   };
 }
 
@@ -279,6 +289,9 @@ app.post('/api/orders', upload.single('payment_proof'), (req,res)=>{
   const payment_status = body.payment_status || body.paymentStatus || 'Pending';
   const transaction_id = body.transaction_id || body.transactionId || '';
   const payment_note = body.payment_note || body.paymentNote || '';
+  const transport_name = body.transport_name || body.transportName || body.cargo_center || '';
+  const transport_city = body.transport_city || body.transportCity || '';
+  const transport_note = body.transport_note || body.transportNote || '';
 
   if(!flatCustomer.name || !flatCustomer.phone || !flatCustomer.city || !flatCustomer.address){
     return res.status(400).json({error:'Customer name, phone, city and address are required'});
@@ -295,9 +308,9 @@ app.post('/api/orders', upload.single('payment_proof'), (req,res)=>{
   const date = body.date || new Date().toLocaleDateString('en-PK');
 
   const tx = db.transaction(()=>{
-    db.prepare(`INSERT OR REPLACE INTO orders(id,date,customer_name,phone,city,address,subtotal,delivery,total,payment_method,status,payment_status,transaction_id,payment_note,payment_proof_url)
-      VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
-      .run(id,date,flatCustomer.name,flatCustomer.phone,flatCustomer.city,flatCustomer.address,subtotal,delivery,total,payment_method,body.status || 'New',payment_status,transaction_id,payment_note,proofUrl);
+    db.prepare(`INSERT OR REPLACE INTO orders(id,date,customer_name,phone,city,address,subtotal,delivery,total,payment_method,status,payment_status,transaction_id,payment_note,payment_proof_url,transport_name,transport_city,transport_note)
+      VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+      .run(id,date,flatCustomer.name,flatCustomer.phone,flatCustomer.city,flatCustomer.address,subtotal,delivery,total,payment_method,body.status || 'New',payment_status,transaction_id,payment_note,proofUrl,transport_name,transport_city,transport_note);
 
     db.prepare('DELETE FROM order_items WHERE order_id=?').run(id);
     const itemStmt = db.prepare(`INSERT INTO order_items(order_id,product_id,name,category,price,qty,img) VALUES(?,?,?,?,?,?,?)`);
@@ -333,8 +346,10 @@ app.post('/api/admin/products', auth, upload.single('image'), (req,res)=>{
   const nextId = (db.prepare('SELECT MAX(id) AS m FROM products').get().m || 0) + 1;
   const img = req.file ? `/uploads/${req.file.filename}` : (body.img || '');
   const stockStatus = body.stock_status || body.stockStatus || (body.outOfStock==='1'||body.outOfStock==='true' ? 'out' : 'in');
-  db.prepare(`INSERT INTO products(id,cat,name,urdu,wt,price,comp,shape,hot,disc,img,realProductPhoto,realPhotoSource,stock,stock_status,out_of_stock)
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(nextId,body.cat||'Insecticides',body.name||'New Product',body.urdu||'',body.wt||'',Number(body.price)||0,body.comp||'',body.shape||'bottle',body.hot==='true'||body.hot==='1'?1:0,Number(body.disc)||0,img,req.file?1:0,req.file?'admin uploaded product photo':body.realPhotoSource||'',Number(body.stock)||0,stockStatus,stockStatus==='out'?1:0);
+  const pCarton = body.p_carton || body.pCarton || DEFAULT_PCARTON[nextId] || '';
+  const pCartonQty = cartonQtyFromValue(pCarton);
+  db.prepare(`INSERT INTO products(id,cat,name,urdu,wt,price,comp,shape,hot,disc,img,realProductPhoto,realPhotoSource,stock,stock_status,out_of_stock,p_carton,p_carton_qty)
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(nextId,body.cat||'Insecticides',body.name||'New Product',body.urdu||'',body.wt||'',Number(body.price)||0,body.comp||'',body.shape||'bottle',body.hot==='true'||body.hot==='1'?1:0,Number(body.disc)||0,img,req.file?1:0,req.file?'admin uploaded product photo':body.realPhotoSource||'',Number(body.stock)||0,stockStatus,stockStatus==='out'?1:0,pCarton,pCartonQty);
   res.status(201).json({ok:true, product:productRowToClient(db.prepare('SELECT * FROM products WHERE id=?').get(nextId))});
 });
 app.put('/api/admin/products/:id', auth, upload.single('image'), (req,res)=>{
@@ -343,8 +358,10 @@ app.put('/api/admin/products/:id', auth, upload.single('image'), (req,res)=>{
   const b = req.body || {};
   const img = req.file ? `/uploads/${req.file.filename}` : (b.img !== undefined ? b.img : existing.img);
   const stockStatus = b.stock_status || b.stockStatus || (b.outOfStock==='1'||b.outOfStock==='true' ? 'out' : (existing.stock_status || 'in'));
-  db.prepare(`UPDATE products SET cat=?,name=?,urdu=?,wt=?,price=?,comp=?,shape=?,hot=?,disc=?,img=?,realProductPhoto=?,realPhotoSource=?,stock=?,stock_status=?,out_of_stock=?,updated_at=CURRENT_TIMESTAMP WHERE id=?`)
-    .run(b.cat||existing.cat,b.name||existing.name,b.urdu??existing.urdu,b.wt??existing.wt,Number(b.price??existing.price),b.comp??existing.comp,b.shape??existing.shape,(b.hot==='true'||b.hot==='1'||b.hot===true)?1:0,Number(b.disc??existing.disc),img,req.file?1:(b.realProductPhoto==='true'||b.realProductPhoto==='1'||existing.realProductPhoto?1:0),req.file?'admin uploaded product photo':(b.realPhotoSource??existing.realPhotoSource),Number(b.stock??existing.stock),stockStatus,stockStatus==='out'?1:0,req.params.id);
+  const pCarton = b.p_carton || b.pCarton || existing.p_carton || DEFAULT_PCARTON[req.params.id] || '';
+  const pCartonQty = cartonQtyFromValue(pCarton);
+  db.prepare(`UPDATE products SET cat=?,name=?,urdu=?,wt=?,price=?,comp=?,shape=?,hot=?,disc=?,img=?,realProductPhoto=?,realPhotoSource=?,stock=?,stock_status=?,out_of_stock=?,p_carton=?,p_carton_qty=?,updated_at=CURRENT_TIMESTAMP WHERE id=?`)
+    .run(b.cat||existing.cat,b.name||existing.name,b.urdu??existing.urdu,b.wt??existing.wt,Number(b.price??existing.price),b.comp??existing.comp,b.shape??existing.shape,(b.hot==='true'||b.hot==='1'||b.hot===true)?1:0,Number(b.disc??existing.disc),img,req.file?1:(b.realProductPhoto==='true'||b.realProductPhoto==='1'||existing.realProductPhoto?1:0),req.file?'admin uploaded product photo':(b.realPhotoSource??existing.realPhotoSource),Number(b.stock??existing.stock),stockStatus,stockStatus==='out'?1:0,pCarton,pCartonQty,req.params.id);
   res.json({ok:true, product:productRowToClient(db.prepare('SELECT * FROM products WHERE id=?').get(req.params.id))});
 });
 app.post('/api/admin/products/:id/image', auth, upload.single('image'), (req,res)=>{
@@ -362,7 +379,7 @@ function buildOrder(id){
   const o = db.prepare('SELECT * FROM orders WHERE id=?').get(id);
   if(!o) return null;
   const items = db.prepare('SELECT product_id AS id, name, category AS cat, price, qty, img FROM order_items WHERE order_id=?').all(id);
-  return {id:o.id,date:o.date,name:o.customer_name,phone:o.phone,city:o.city,address:o.address,items,subtotal:o.subtotal,delivery:o.delivery,total:o.total,status:o.status,payment_method:o.payment_method,paymentMethod:o.payment_method,payment_status:o.payment_status||'Pending',paymentStatus:o.payment_status||'Pending',transaction_id:o.transaction_id||'',transactionId:o.transaction_id||'',payment_note:o.payment_note||'',paymentNote:o.payment_note||'',payment_proof_url:o.payment_proof_url||'',paymentProofUrl:o.payment_proof_url||'',paymentProof:o.payment_proof_url?{url:o.payment_proof_url,data:o.payment_proof_url}:null,created_at:o.created_at};
+  return {id:o.id,date:o.date,name:o.customer_name,phone:o.phone,city:o.city,address:o.address,items,subtotal:o.subtotal,delivery:o.delivery,total:o.total,status:o.status,payment_method:o.payment_method,paymentMethod:o.payment_method,payment_status:o.payment_status||'Pending',paymentStatus:o.payment_status||'Pending',transaction_id:o.transaction_id||'',transactionId:o.transaction_id||'',payment_note:o.payment_note||'',paymentNote:o.payment_note||'',payment_proof_url:o.payment_proof_url||'',paymentProofUrl:o.payment_proof_url||'',paymentProof:o.payment_proof_url?{url:o.payment_proof_url,data:o.payment_proof_url}:null,transport_name:o.transport_name||'',transportName:o.transport_name||'',transport_city:o.transport_city||'',transportCity:o.transport_city||'',transport_note:o.transport_note||'',transportNote:o.transport_note||'',created_at:o.created_at};
 }
 
 app.get('/api/admin/settings', auth, (req,res)=>res.json(getSettings()));
@@ -430,8 +447,8 @@ app.get('/api/admin/orders', auth, (req,res)=>{
   res.json(rows.map(r=>buildOrder(r.id)));
 });
 app.put('/api/admin/orders/:id/status', auth, (req,res)=>{
-  const allowed = new Set(['New','Pending','Completed','Cancelled']);
-  const status = allowed.has(req.body.status) ? req.body.status : 'New';
+  const allowed = new Set(['New','Pending','Payment Pending','Payment Verification','Delivery Process','Completed','Cancelled']);
+  const status = allowed.has(req.body.status) ? req.body.status : (req.body.status || 'New');
   const paymentStatus = req.body.paymentStatus || req.body.payment_status || null;
   if(paymentStatus){
     db.prepare('UPDATE orders SET status=?, payment_status=? WHERE id=?').run(status, paymentStatus, req.params.id);
